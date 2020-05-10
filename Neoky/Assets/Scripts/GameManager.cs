@@ -85,7 +85,9 @@ namespace Assets.Scripts
                 if (SceneManager.GetSceneByName(_newScene).isLoaded == false)
                 {
                     SceneManager.LoadSceneAsync(_newScene, LoadSceneMode.Additive);
-                    if(_oldScene != Constants.SCENE_NOSCENE)
+                    players[Client.instance.myId].currentScene = _newScene; // A titre d'information on modifie la CurrentScene variable de notre player                    
+                    //Debug.Log("My player current scene :"+players[Client.instance.myId].currentScene);
+                    if (_oldScene != Constants.SCENE_NOSCENE)
                     {
                         SceneManager.UnloadSceneAsync(_oldScene);
                     }                    

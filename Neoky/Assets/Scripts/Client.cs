@@ -12,7 +12,7 @@ namespace Assets.Scripts
         public static Client instance;
         public static int dataBufferSize = 4096;
 
-        public string ip = "127.0.0.1";
+        public string ip = "35.179.38.72"; // 90.49.198.99 / 127.0.0.1
         public int port = 26950;
         public int myId = 0;
         public TCP tcp;
