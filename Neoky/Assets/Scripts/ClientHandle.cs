@@ -23,10 +23,10 @@ namespace Assets.Scripts
         public static void SpawnPlayer(Packet _packet)
         {
             int _id = _packet.ReadInt();
-            string _username = _packet.ReadString();
+            //string _username = _packet.ReadString();
             string _startScene = _packet.ReadString();
 
-            GameManager.instance.SpawnPlayer(_id, _username, _startScene);
+            GameManager.instance.SpawnPlayer(_id, _startScene);
         }
 
         /*public static void SpawnPlayer(Packet _packet)
@@ -54,6 +54,27 @@ namespace Assets.Scripts
             }*/
             //ClientSend.WelcomeReceived(); 
             GameManager.instance.SwitchToScene(_myId , _newScene, _oldScene);
+        }
+
+        public static void SignUpReturn(Packet _packet)
+        {
+            string _returnStatus = _packet.ReadString();
+            int _myId = _packet.ReadInt();
+
+            Debug.Log($"Return Sign Up Status : {_returnStatus}");
+
+            switch (_returnStatus)
+            {
+                case "ADHESION_OK":
+                    Debug.Log("Creation de Compte Finalisée.");
+                        break;
+                case "ADHESION_KO":
+                    Debug.LogError("Votre création de compte a échoué, merci de réessayer ultérieurement.");
+                    break;
+                default:
+                    Debug.LogError("Une erreur technique est survenue, merci de réessayer ultérieurement.");
+                    break;
+            }
         }
 
         /*public static void PlayerPosition(Packet _packet)

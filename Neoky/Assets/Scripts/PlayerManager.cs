@@ -15,10 +15,10 @@ namespace Assets.Scripts
 
         public string currentScene;
 
-        public void Initialize(int _id, string _username, string _startScene)
+        public void Initialize(int _id, string _startScene)
         {
             id = _id;
-            username = _username;
+            //username = _username;
             //health = maxHealth;
             currentScene = _startScene;
         }

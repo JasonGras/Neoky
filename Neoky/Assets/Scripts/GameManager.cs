@@ -38,7 +38,7 @@ namespace Assets.Scripts
         /// <summary>Spawns a player.</summary>
         /// <param name="_id">The player's ID.</param>
         /// <param name="_name">The player's name.</param>
-        public void SpawnPlayer(int _id, string _username, string _startScene)
+        public void SpawnPlayer(int _id, string _startScene)
         {
             GameObject _player;
             if (_id == Client.instance.myId)
@@ -49,7 +49,7 @@ namespace Assets.Scripts
             {
                 _player = Instantiate(netOtherPlayerPrefab);
             }            
-            _player.GetComponent<PlayerManager>().Initialize(_id, _username,_startScene);
+            _player.GetComponent<PlayerManager>().Initialize(_id,_startScene);
             players.Add(_id, _player.GetComponent<PlayerManager>());
         }
 

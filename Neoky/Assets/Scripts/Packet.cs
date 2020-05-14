@@ -12,6 +12,7 @@ namespace Assets.Scripts
         welcome = 1,
         switchToScene,
         spawnPlayer,
+        signUpStatus,
         playerDisconnected
         /*        
         
@@ -35,7 +36,8 @@ namespace Assets.Scripts
     public enum ClientPackets
     {
         welcomeReceived = 1,        
-        switchScene
+        switchScene,
+        signUp
         //playerMovement,
     }
 

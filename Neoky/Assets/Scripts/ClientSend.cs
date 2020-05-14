@@ -29,7 +29,7 @@ namespace Assets.Scripts
             using (Packet _packet = new Packet((int)ClientPackets.welcomeReceived))
             {
                 _packet.Write(Client.instance.myId);
-                _packet.Write(UIManager.instance.usernameField.text);
+                //_packet.Write(UIManager.instance.usernameField.text);
 
                 SendTCPData(_packet);
             }
@@ -61,6 +61,20 @@ namespace Assets.Scripts
                 _packet.Write(_scenes);//Desired Scene Name
 
                 Debug.Log($"Desired New Scene: {_scenes}");
+                SendTCPData(_packet);
+            }
+        }
+
+        public static void SignUpToCognito(string _username, string _password, string _email)
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.signUp))
+            {
+                _packet.Write(Client.instance.myId);
+                _packet.Write(_username);//Desired Scene Name
+                _packet.Write(_password);//Desired Scene Name
+                _packet.Write(_email);//Desired Scene Name
+
+                //Debug.Log($"Desired New Scene: {_scenes}");
                 SendTCPData(_packet);
             }
         }
