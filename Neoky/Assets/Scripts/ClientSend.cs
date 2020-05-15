@@ -79,6 +79,29 @@ namespace Assets.Scripts
             }
         }
 
+        public static void LogInToCognito(string _username, string _password)
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.signIn))
+            {
+                _packet.Write(Client.instance.myId);
+                _packet.Write(_username);
+                _packet.Write(_password);
+
+                //Debug.Log($"Desired New Scene: {_scenes}");
+                SendTCPData(_packet);
+            }
+        }
+
+        public static void AccessHomePage()
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.accessHomePage))
+            {
+                _packet.Write(Client.instance.myId);
+                _packet.Write(Client.instance.myToken);
+                SendTCPData(_packet);
+            }
+        }
+
         /*public static void PlayerShoot(Vector3 _facing)
         {
             using (Packet _packet = new Packet((int)ClientPackets.playerShoot))

@@ -16,6 +16,7 @@ using System.Linq;
 using Amazon.Runtime.Internal;
 
 using System.Text.RegularExpressions;
+using UnityEngine.SceneManagement;
 
 // Required for the GetS3BucketsAsync example
 //using Amazon.S3;
@@ -39,7 +40,7 @@ namespace Assets.Scripts
         // Au chargement de la page, je me connecte au serveur
         private void Start()
         {
-            Client.instance.ConnectToServer();
+            //Client.instance.ConnectToServer();
         }
 
         public void SignUpToCognito()
@@ -63,7 +64,23 @@ namespace Assets.Scripts
                 }
             }
 
-        }       
+        }
+
+        public void GoToPreviousPage() // Return our Canceel Btn to go to previous page
+        {
+            if (SceneManager.GetSceneByName("Authentication").isLoaded == false)
+            {
+                if (SceneManager.GetSceneByName("SignUp").isLoaded)
+                {
+                    SceneManager.UnloadSceneAsync("SignUp");
+                }
+                SceneManager.LoadSceneAsync("Authentication", LoadSceneMode.Additive);
+            }
+            else
+            {
+                SceneManager.UnloadSceneAsync("Authentication");
+            }
+        }
 
         public bool CheckEmailPattern(string _text)
         {

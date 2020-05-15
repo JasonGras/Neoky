@@ -15,6 +15,7 @@ namespace Assets.Scripts
         public string ip = "127.0.0.1";//"18.132.130.239"; // 90.49.198.99 / 127.0.0.1
         public int port = 26950;
         public int myId = 0;
+        public string myToken = null;
         public TCP tcp;
         public UDP udp;
 
@@ -300,6 +301,7 @@ namespace Assets.Scripts
             { (int)ServerPackets.switchToScene, ClientHandle.SwitchToScene },
             { (int)ServerPackets.spawnPlayer, ClientHandle.SpawnPlayer },
             { (int)ServerPackets.signUpStatus, ClientHandle.SignUpReturn },
+            { (int)ServerPackets.signInStatus, ClientHandle.SignInReturn },
             /*
             { (int)ServerPackets.playerPosition, ClientHandle.PlayerPosition },
             { (int)ServerPackets.playerRotation, ClientHandle.PlayerRotation },            

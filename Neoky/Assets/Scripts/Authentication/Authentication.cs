@@ -13,84 +13,111 @@ using Amazon.Extensions.CognitoAuthentication;
 using Amazon.Runtime;
 using Amazon.CognitoIdentityProvider.Model;
 using System.Linq;
+using UnityEngine.SceneManagement;
+using System.Text.RegularExpressions;
+using UnityEngine.PlayerLoop;
 
-
-public class Authentication : MonoBehaviour
+namespace Assets.Scripts
 {
-    // AWS Inputs
-    private string POOL_ID = "eu-west-2_htPUpskO5";
-    private string CLIENTAPP_ID = "5e3ri4nan0b2vrovmtcbmm18bo";
-    private string FED_POOL_ID = "eu-west-2:1685b7b4-a171-492b-ad7c-62527ccd80d1";
-    private RegionEndpoint REGION = RegionEndpoint.EUWest2;
-
-    private AmazonCognitoIdentityProviderClient _client;
-    // UNITY Inputs
-    public InputField _username;
-    public InputField _password;
-    //public InputField _password;  
-
-    public void AuthenticateUsers()
+    public class Authentication : MonoBehaviour
     {
-        _ = AuthenticateFoncAsync(_username.text, _password.text);
-    }
+        public static Authentication Auth;
 
-    public async Task AuthenticateFoncAsync(string _username, string _password)
-    {
-        AmazonCognitoIdentityProviderClient provider =
-            new AmazonCognitoIdentityProviderClient(new AnonymousAWSCredentials(), REGION);
+        // AWS Inputs
 
-        CognitoUserPool userPool = new CognitoUserPool(POOL_ID, CLIENTAPP_ID, provider);
+        public Text errorMessage;
+        //public Text signUpSent;
+        public Image errorImageBG;
 
-        CognitoUser user = new CognitoUser(_username, CLIENTAPP_ID, userPool, provider);
+        // UNITY Inputs
+        public InputField _username;
+        public InputField _password;
+        public Button _connexion;
+        //public InputField _password;  
 
-        InitiateSrpAuthRequest authRequest = new InitiateSrpAuthRequest()
+        public void AuthenticateUsers()
         {
-            Password = _password
-        };
-
-        AuthFlowResponse authFlowResponse = null;
-        try
-        {
-            authFlowResponse = await user.StartWithSrpAuthAsync(authRequest).ConfigureAwait(false);
-            Debug.Log("Login Lunch");
+            //Debug.Log("Authentication Required for " + _username.text);
+            if (CheckUserPattern(_username.text))
+            {
+                if (CheckPasswordPattern(_password.text))
+                {
+                    _connexion.enabled = false;
+                    if (errorImageBG.gameObject.activeSelf)
+                    {
+                        errorImageBG.gameObject.SetActive(false);
+                    }
+                    errorMessage.text = "";
+                    ClientSend.LogInToCognito(_username.text, _password.text);
+                }
+            }
+            //_ = AuthenticateFoncAsync(_username.text, _password.text);
         }
-        catch (Exception e)
+        public void GoToSignUpPage()
         {
-            Debug.LogError("Login Failed : " + e);
-            return;
+            if (SceneManager.GetSceneByName("SignUp").isLoaded == false)
+            {
+                if (SceneManager.GetSceneByName("Authentication").isLoaded)
+                {
+                    SceneManager.UnloadSceneAsync("Authentication");
+                }
+                SceneManager.LoadSceneAsync("SignUp", LoadSceneMode.Additive);
+            }
+            else
+            {
+                SceneManager.UnloadSceneAsync("SignUp");
+            }
         }
 
-        Debug.Log("Login Seems Ok");
-
-        // Get users Attribute
-        GetUserRequest getUserRequest = new GetUserRequest();
-        getUserRequest.AccessToken = authFlowResponse.AuthenticationResult.AccessToken;
-        Debug.Log("GetUserAttribute Seems Ok");
-
-        //Get User Values
-        GetUserResponse getUser = await provider.GetUserAsync(getUserRequest);
-        string _curMoney = getUser.UserAttributes.Where(a => a.Name == "custom:Money").First().Value;
-        int _userMoney = Convert.ToInt32(_curMoney);
-
-        Debug.Log("Total sur le compte de" + _username + ":" + _userMoney);
-
-        // Attribute type definition
-        AttributeType attributeType = new AttributeType()
+        public bool CheckUserPattern(string _text)
         {
-            Name = "custom:Money",
-            Value = Convert.ToString(_userMoney + 10),// Valeur mise a jour
-        };
+            string pattern;
+            pattern = @"^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$"; // Username pattern
 
+            Regex rgx = new Regex(pattern);
 
-        // Update Attribute Request
-        UpdateUserAttributesRequest updateUserAttributesRequest = new UpdateUserAttributesRequest()
+            if (rgx.IsMatch(_text))
+            {
+                return true;
+            }
+            else
+            {
+                errorImageBG.gameObject.SetActive(true);
+                errorMessage.text = "Le nom de compte est incorrect.";
+                Debug.LogWarning("Le format de votre Nom d'utilisateur est incorrect.");
+                return false;
+            }
+        }
+
+        public bool CheckPasswordPattern(string _text)
         {
-            AccessToken = authFlowResponse.AuthenticationResult.AccessToken
-        };
+            string pattern;
+            pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})"; // Password pattern (1 Min 1 Maj 1 Numeric 1 Symbol)
 
-        updateUserAttributesRequest.UserAttributes.Add(attributeType);
-        provider.UpdateUserAttributes(updateUserAttributesRequest);
+            Regex rgx = new Regex(pattern);
 
-        Debug.Log("+10 on the Money of account " + _username);
+            if (rgx.IsMatch(_text))
+            {
+                return true;
+            }
+            else
+            {
+                errorImageBG.gameObject.SetActive(true);
+                errorMessage.text = "Votre mot de passe est incorrect.";
+                Debug.LogWarning("Le format du Mot de passe est incorrect.");
+                return false;
+            }
+        }
+
+        public void UpdateSceneMessage(string message)
+        {
+            _connexion.enabled = true;
+            if (!errorImageBG.gameObject.activeSelf)
+            {
+                errorImageBG.gameObject.SetActive(true);
+            }
+            errorMessage.text = message;
+        }
+        
     }
 }

@@ -77,6 +77,30 @@ namespace Assets.Scripts
             }
         }
 
+        public static void SignInReturn(Packet _packet)
+        {
+            string _returnStatus = _packet.ReadString();
+            string _clientToken = _packet.ReadString();
+            int _myId = _packet.ReadInt();
+
+            Debug.Log($"Return Sign Up Status : {_returnStatus}");
+
+            switch (_returnStatus)
+            {
+                case "AUTHENTICATION_OK":
+                    Debug.Log("Authentification réussie.");
+                    Client.instance.myToken = _clientToken;
+                    break;
+                case "AUTHENTICATION_KO":
+                    Debug.LogError("Votre authentification a échoué, merci de réessayer ultérieurement.");
+                    Authentication.Auth.UpdateSceneMessage("Votre authentification a échoué, merci de réessayer ultérieurement.");
+                    break;
+                default:
+                    Debug.LogError("Une erreur technique est survenue, merci de réessayer ultérieurement.");
+                    break;
+            }
+        }
+
         /*public static void PlayerPosition(Packet _packet)
         {
             int _id = _packet.ReadInt();

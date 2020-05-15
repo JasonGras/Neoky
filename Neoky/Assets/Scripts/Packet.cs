@@ -13,6 +13,7 @@ namespace Assets.Scripts
         switchToScene,
         spawnPlayer,
         signUpStatus,
+        signInStatus,
         playerDisconnected
         /*        
         
@@ -37,7 +38,9 @@ namespace Assets.Scripts
     {
         welcomeReceived = 1,        
         switchScene,
-        signUp
+        signUp,
+        signIn,
+        accessHomePage
         //playerMovement,
     }
 
