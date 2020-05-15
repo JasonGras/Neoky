@@ -25,8 +25,9 @@ namespace Assets.Scripts
             int _id = _packet.ReadInt();
             //string _username = _packet.ReadString();
             string _startScene = _packet.ReadString();
+            string _oldScene = _packet.ReadString();
 
-            GameManager.instance.SpawnPlayer(_id, _startScene);
+            GameManager.instance.SpawnPlayer(_id, _startScene, _oldScene);
         }
 
         /*public static void SpawnPlayer(Packet _packet)
@@ -90,6 +91,7 @@ namespace Assets.Scripts
                 case "AUTHENTICATION_OK":
                     Debug.Log("Authentification réussie.");
                     Client.instance.myToken = _clientToken;
+
                     break;
                 case "AUTHENTICATION_KO":
                     Debug.LogError("Votre authentification a échoué, merci de réessayer ultérieurement.");

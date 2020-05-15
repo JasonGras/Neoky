@@ -38,7 +38,7 @@ namespace Assets.Scripts
         /// <summary>Spawns a player.</summary>
         /// <param name="_id">The player's ID.</param>
         /// <param name="_name">The player's name.</param>
-        public void SpawnPlayer(int _id, string _startScene)
+        public void SpawnPlayer(int _id, string _startScene, string _oldScene)
         {
             GameObject _player;
             if (_id == Client.instance.myId)
@@ -51,6 +51,8 @@ namespace Assets.Scripts
             }            
             _player.GetComponent<PlayerManager>().Initialize(_id,_startScene);
             players.Add(_id, _player.GetComponent<PlayerManager>());
+            SwitchToScene(_id, _startScene, _oldScene);
+
         }
 
         /// <summary>Spawns a player.</summary>
