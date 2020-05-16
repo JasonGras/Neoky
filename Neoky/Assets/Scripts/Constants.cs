@@ -9,6 +9,7 @@ namespace Assets.Scripts
     class Constants
     {
         public const string SCENE_NOSCENE = "NOSCENE"; // How many ticks per second  
+        public const string SCENE_SAMESCENE = "SAMESCENE"; // How many ticks per second  
         public const string SCENE_HOMEPAGE = "HomePage"; // How many ticks per second  
         public const string SCENE_COLLECTION = "CollectionPage"; // How many ticks per second  
     }

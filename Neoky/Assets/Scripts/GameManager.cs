@@ -40,6 +40,8 @@ namespace Assets.Scripts
         /// <param name="_name">The player's name.</param>
         public void SpawnPlayer(int _id, string _startScene, string _oldScene)
         {
+
+            // Create Player Prefab
             GameObject _player;
             if (_id == Client.instance.myId)
             {
@@ -48,9 +50,14 @@ namespace Assets.Scripts
             else
             {
                 _player = Instantiate(netOtherPlayerPrefab);
-            }            
+            }         
+            
             _player.GetComponent<PlayerManager>().Initialize(_id,_startScene);
+
+            // Add player to a List of Players
             players.Add(_id, _player.GetComponent<PlayerManager>());
+
+            // Send player to his Loged In Homepage
             SwitchToScene(_id, _startScene, _oldScene);
 
         }
@@ -89,7 +96,7 @@ namespace Assets.Scripts
                     SceneManager.LoadSceneAsync(_newScene, LoadSceneMode.Additive);
                     players[Client.instance.myId].currentScene = _newScene; // A titre d'information on modifie la CurrentScene variable de notre player                    
                     //Debug.Log("My player current scene :"+players[Client.instance.myId].currentScene);
-                    if (_oldScene != Constants.SCENE_NOSCENE)
+                    if (_oldScene != Constants.SCENE_SAMESCENE && _oldScene != Constants.SCENE_NOSCENE)
                     {
                         SceneManager.UnloadSceneAsync(_oldScene);
                     }                    

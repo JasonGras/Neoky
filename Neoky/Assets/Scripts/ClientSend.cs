@@ -58,6 +58,7 @@ namespace Assets.Scripts
             using (Packet _packet = new Packet((int)ClientPackets.switchScene))
             {
                 _packet.Write(Client.instance.myId);
+                _packet.Write(Client.instance.myCurrentSession);
                 _packet.Write(_scenes);//Desired Scene Name
 
                 Debug.Log($"Desired New Scene: {_scenes}");
@@ -97,7 +98,7 @@ namespace Assets.Scripts
             using (Packet _packet = new Packet((int)ClientPackets.accessHomePage))
             {
                 _packet.Write(Client.instance.myId);
-                _packet.Write(Client.instance.myToken);
+                _packet.Write(Client.instance.myCurrentSession);
                 SendTCPData(_packet);
             }
         }

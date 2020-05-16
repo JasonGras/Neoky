@@ -14,6 +14,7 @@ namespace Assets.Scripts
         spawnPlayer,
         signUpStatus,
         signInStatus,
+        signInToken,
         playerDisconnected
         /*        
         
@@ -192,6 +193,14 @@ namespace Assets.Scripts
             Write(_value.x);
             Write(_value.y);
             Write(_value.z);
+        }
+        /// <summary>Adds a Vector3 to the packet.</summary>
+        /// <param name="_value">The Vector3 to add.</param>
+        public void Write(UserSession _value)
+        {
+            Write(_value.Access_Token);
+            Write(_value.Id_Token);
+            Write(_value.Refresh_Token);
         }
         /// <summary>Adds a Quaternion to the packet.</summary>
         /// <param name="_value">The Quaternion to add.</param>
@@ -379,6 +388,13 @@ namespace Assets.Scripts
         public Vector3 ReadVector3(bool _moveReadPos = true)
         {
             return new Vector3(ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
+        }
+
+        /// <summary>Reads a UserSession from the packet.</summary>
+        /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
+        public UserSession ReadUserSession(bool _moveReadPos = true)
+        {
+            return new UserSession(ReadString(_moveReadPos), ReadString(_moveReadPos), ReadString(_moveReadPos));
         }
 
         /// <summary>Reads a Quaternion from the packet.</summary>

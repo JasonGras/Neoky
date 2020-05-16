@@ -1,14 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts
 {
-    public class UILoader : MonoBehaviour
+    public class LoadFirstScene : MonoBehaviour
     {
         // Start is called before the first frame update
         void Start()
         {
-
             Client.instance.ConnectToServer();
 
             if (SceneManager.GetSceneByName("Authentication").isLoaded == false)
@@ -19,16 +20,7 @@ namespace Assets.Scripts
             {
                 SceneManager.UnloadSceneAsync("Authentication");
             }
-
-            /*
-            if(SceneManager.GetSceneByName("UIMenu").isLoaded == false)
-            {
-                SceneManager.LoadSceneAsync("UIMenu", LoadSceneMode.Additive);
-            }
-            else
-            {
-                SceneManager.UnloadSceneAsync("UIMenu");
-            }   */
         }
+        
     }
 }

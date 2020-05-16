@@ -81,7 +81,6 @@ namespace Assets.Scripts
         public static void SignInReturn(Packet _packet)
         {
             string _returnStatus = _packet.ReadString();
-            string _clientToken = _packet.ReadString();
             int _myId = _packet.ReadInt();
 
             Debug.Log($"Return Sign Up Status : {_returnStatus}");
@@ -90,8 +89,7 @@ namespace Assets.Scripts
             {
                 case "AUTHENTICATION_OK":
                     Debug.Log("Authentification réussie.");
-                    Client.instance.myToken = _clientToken;
-
+                    //AccessHomePage();
                     break;
                 case "AUTHENTICATION_KO":
                     Debug.LogError("Votre authentification a échoué, merci de réessayer ultérieurement.");
@@ -101,6 +99,15 @@ namespace Assets.Scripts
                     Debug.LogError("Une erreur technique est survenue, merci de réessayer ultérieurement.");
                     break;
             }
+        }
+        public static void SignInTokens(Packet _packet)
+        {
+            UserSession _clientTokens = _packet.ReadUserSession();
+            int _myId = _packet.ReadInt();
+
+            Debug.Log($"SignInTokens | User Session Recieved");
+            Client.instance.myCurrentSession = _clientTokens;
+
         }
 
         /*public static void PlayerPosition(Packet _packet)

@@ -33,12 +33,12 @@ namespace Assets.Scripts
         }
 
         /// <summary>Attempts to connect to the server.</summary>
-        public void ConnectToServer()
-        {
-            startMenu.SetActive(false);
-            usernameField.interactable = false;
-            Client.instance.ConnectToServer();
-        }
+        //public void ConnectToServer()
+        //{
+        //    startMenu.SetActive(false);
+        //    usernameField.interactable = false;
+        //    Client.instance.ConnectToServer();
+        //}
         public void ShowCollection()
         {
             //startMenu.SetActive(false);

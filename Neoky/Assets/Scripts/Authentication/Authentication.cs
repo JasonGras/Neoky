@@ -35,6 +35,7 @@ namespace Assets.Scripts
         public Button _connexion;
         //public InputField _password;  
 
+        
         public void AuthenticateUsers()
         {
             //Debug.Log("Authentication Required for " + _username.text);
