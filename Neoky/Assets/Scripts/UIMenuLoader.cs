@@ -15,7 +15,7 @@ namespace Assets.Scripts
             }
             else
             {
-                SceneManager.UnloadSceneAsync("UIMenu");
+                //SceneManager.UnloadSceneAsync("UIMenu"); // Must Stay loaded = Will be Unloaded on PlayingScenes
             }
 
             /*
