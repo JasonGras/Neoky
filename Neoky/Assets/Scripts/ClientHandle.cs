@@ -54,7 +54,7 @@ namespace Assets.Scripts
                 _player.currentScene... ?
             }*/
             //ClientSend.WelcomeReceived(); 
-            GameManager.instance.SwitchToScene(_myId , _newScene, _oldScene);
+            GameManager.instance.SwitchToScene(_newScene, _oldScene);
         }
 
         public static void SignUpReturn(Packet _packet)

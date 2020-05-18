@@ -16,6 +16,7 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 using System.Text.RegularExpressions;
 using UnityEngine.PlayerLoop;
+using TMPro;
 
 namespace Assets.Scripts
 {
@@ -30,12 +31,20 @@ namespace Assets.Scripts
         public Image errorImageBG;
 
         // UNITY Inputs
-        public InputField _username;
-        public InputField _password;
+        public TMP_InputField _username;
+        public TMP_InputField _password;
         public Button _connexion;
+        
         //public InputField _password;  
 
-        
+        private void Start()
+        {
+            if (SceneManager.GetSceneByName("LoadingScene").isLoaded == true)
+            {
+                SceneManager.UnloadSceneAsync("LoadingScene");
+            }
+        }
+
         public void AuthenticateUsers()
         {
             //Debug.Log("Authentication Required for " + _username.text);
@@ -49,7 +58,17 @@ namespace Assets.Scripts
                         errorImageBG.gameObject.SetActive(false);
                     }
                     errorMessage.text = "";
-                    ClientSend.LogInToCognito(_username.text, _password.text);
+                    if (!Client.instance.tcp.socket.Connected)
+                    {
+                        _connexion.enabled = true;
+                        Debug.LogError("Le serveur de jeu est inacessible pour le moment, veuillez réessayer ultèrieurement.");
+                        //Client.instance.tcp.Connect(); // Connect tcp, udp gets connected once tcp is done
+                    }
+                    else
+                    {
+                        ClientSend.LogInToCognito(_username.text, _password.text);
+                    }
+                    
                 }
             }
             //_ = AuthenticateFoncAsync(_username.text, _password.text);

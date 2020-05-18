@@ -17,10 +17,6 @@ namespace Assets.Scripts
         //public GameObject localPlayerPrefab;
         //public GameObject playerPrefab;
         public GameObject netPlayerPrefab;
-        public GameObject netOtherPlayerPrefab;
-        //public GameObject itemSpawnerPrefab;
-        //public GameObject projectilePrefab;
-        //public GameObject enemyPrefab;
 
         private void Awake()
         {
@@ -42,23 +38,16 @@ namespace Assets.Scripts
         {
 
             // Create Player Prefab
-            GameObject _player;
-            if (_id == Client.instance.myId)
-            {
-                _player = Instantiate(netPlayerPrefab);
-            }
-            else
-            {
-                _player = Instantiate(netOtherPlayerPrefab);
-            }         
+            GameObject _player = Instantiate(netPlayerPrefab);       
             
+            // Initialize Player
             _player.GetComponent<PlayerManager>().Initialize(_id,_startScene);
 
             // Add player to a List of Players
             players.Add(_id, _player.GetComponent<PlayerManager>());
 
             // Send player to his Loged In Homepage
-            SwitchToScene(_id, _startScene, _oldScene);
+            SwitchToScene(_startScene, _oldScene);
 
         }
 
@@ -83,36 +72,15 @@ namespace Assets.Scripts
             players.Add(_id, _player.GetComponent<PlayerManager>());
         }*/
 
+        #region SCENE_MANAGEMENT
         /// <summary>Spawns a player.</summary>
         /// <param name="_newScene">The New Scene to Switch To</param>
-
-        public void SwitchToScene(int _id, string _newScene, string _oldScene)
+        public void SwitchToScene(string _newScene, string _oldScene)
         {
-            if (_id == Client.instance.myId)
-            {                
-                //SceneManager.LoadScene(_newScene);
-               /* if (SceneManager.GetSceneByName(_newScene).isLoaded == false) // Si ma Scene Désirée n'est pas chargée
-                {
-                    SceneManager.LoadSceneAsync(_newScene, LoadSceneMode.Additive); // Charger ma Scene en mode Aedditif
-                    players[_id].currentScene = _newScene; // A titre d'information on modifie la CurrentScene variable de notre player                    
-                    //Debug.Log("My player current scene :"+players[Client.instance.myId].currentScene);
-                    if (_oldScene != Constants.SCENE_SAMESCENE)
-                    {
-                        if(_oldScene != Constants.SCENE_NOSCENE)
-                        {
-                            SceneManager.UnloadSceneAsync(_oldScene);
-                        }                        
-                    }                    
-                }*/
-                /*else
-                {
-                    SceneManager.UnloadSceneAsync(_newScene);
-                }*/
-
-
                 if (SceneManager.GetSceneByName(_newScene).isLoaded == false)
                 {
                     SceneManager.LoadSceneAsync(_newScene, LoadSceneMode.Additive);
+                   
                     if (_oldScene != Constants.SCENE_SAMESCENE)
                     {
                         if (_oldScene != Constants.SCENE_NOSCENE)
@@ -123,12 +91,23 @@ namespace Assets.Scripts
                 }
                 else
                 {
-                    SceneManager.UnloadSceneAsync(_newScene);
+                    //SceneManager.UnloadSceneAsync(_newScene);
                 }
+        }
 
-                //UIManager.instance.collectionButton.interactable = true;
+        public void LoadScene(string _scene)
+        {
+            if (SceneManager.GetSceneByName(_scene).isLoaded == false)
+            {
+                SceneManager.LoadSceneAsync(_scene, LoadSceneMode.Additive);
             }
         }
+
+        public void UnloadScene(string _scene)
+        {
+            SceneManager.UnloadSceneAsync(_scene);
+        }
+        #endregion
         /*
         public void CreateItemSpawner(int _spawnerId, Vector3 _position, bool _hasItem)
         {

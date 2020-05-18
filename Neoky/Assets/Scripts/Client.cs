@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
 using System;
+using UnityEditor;
+
 
 namespace Assets.Scripts
 {
@@ -15,9 +17,13 @@ namespace Assets.Scripts
         public string ip = "127.0.0.1";//"18.132.130.239"; // 90.49.198.99 / 127.0.0.1
         public int port = 26950;
         public int myId = 0;
+
         public UserSession myCurrentSession;
+        //public GUID myGUID;
+        
         public TCP tcp;
         public UDP udp;
+
 
         private bool isConnected = false;
         private delegate void PacketHandler(Packet _packet);
@@ -34,6 +40,8 @@ namespace Assets.Scripts
                 Debug.Log("Instance already exists, destroying object!");
                 Destroy(this);
             }
+            //myGUID = GUID.Generate(); 
+            //Id = GetId();
         }
 
         private void OnApplicationQuit()
@@ -48,9 +56,11 @@ namespace Assets.Scripts
             udp = new UDP();
 
             InitializeClientData();
-
-            isConnected = true;
+            
             tcp.Connect(); // Connect tcp, udp gets connected once tcp is done
+            if (tcp.socket.Connected)
+                isConnected = true;
+
         }
 
         public class TCP
@@ -71,7 +81,10 @@ namespace Assets.Scripts
                 };
 
                 receiveBuffer = new byte[dataBufferSize];
-                socket.BeginConnect(instance.ip, instance.port, ConnectCallback, socket);
+                IAsyncResult _result = socket.BeginConnect(instance.ip, instance.port, ConnectCallback, socket);
+
+                /*Check if GUID is Known, if it is => Authenticate the Client*/
+                //Debug.Log(Client.instance.myGUID.ToString());
             }
 
             /// <summary>Initializes the newly connected client's TCP-related info.</summary>

@@ -17,6 +17,7 @@ using Amazon.Runtime.Internal;
 
 using System.Text.RegularExpressions;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 // Required for the GetS3BucketsAsync example
 //using Amazon.S3;
@@ -32,9 +33,9 @@ namespace Assets.Scripts
         public Text signUpSent;
         public Image errorImageBG;
 
-        public InputField username;
-        public InputField password;
-        public InputField email;
+        public TMP_InputField username;
+        public TMP_InputField password;
+        public TMP_InputField email;
         public Button signUpBtn;
 
         // Au chargement de la page, je me connecte au serveur
@@ -68,7 +69,10 @@ namespace Assets.Scripts
 
         public void GoToPreviousPage() // Return our Canceel Btn to go to previous page
         {
-            if (SceneManager.GetSceneByName("Authentication").isLoaded == false)
+
+            GameManager.instance.SwitchToScene("Authentication","SignUp");
+
+            /*if (SceneManager.GetSceneByName("Authentication").isLoaded == false)
             {
                 if (SceneManager.GetSceneByName("SignUp").isLoaded)
                 {
@@ -79,7 +83,7 @@ namespace Assets.Scripts
             else
             {
                 SceneManager.UnloadSceneAsync("Authentication");
-            }
+            }*/
         }
 
         public bool CheckEmailPattern(string _text)
