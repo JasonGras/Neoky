@@ -93,7 +93,7 @@ namespace Assets.Scripts
                     break;
                 case "AUTHENTICATION_KO":
                     Debug.LogError("Votre authentification a échoué, merci de réessayer ultérieurement.");
-                    Authentication.Auth.UpdateSceneMessage("Votre authentification a échoué, merci de réessayer ultérieurement.");
+                    Authentication.Auth.UpdateSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.authentication_failed_lbl));
                     break;
                 default:
                     Debug.LogError("Une erreur technique est survenue, merci de réessayer ultérieurement.");

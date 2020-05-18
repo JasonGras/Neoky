@@ -70,7 +70,7 @@ namespace Assets.Scripts
         public void GoToPreviousPage() // Return our Canceel Btn to go to previous page
         {
 
-            GameManager.instance.SwitchToScene("Authentication","SignUp");
+            GameManager.instance.SwitchToScene(Constants.SCENE_AUTHENTICATION, Constants.SCENE_SIGNUP);
 
             /*if (SceneManager.GetSceneByName("Authentication").isLoaded == false)
             {
@@ -100,8 +100,8 @@ namespace Assets.Scripts
             else
             {
                 errorImageBG.gameObject.SetActive(true);
-                errorMessage.text = "Le format de l'adresse email est incorrect.";
-                Debug.LogWarning("Le format de l'adresse email est incorrecte.");
+                errorMessage.text = LocalizationSystem.GetLocalizedValue(Constants.error_email_format_lbl); 
+                //Debug.LogWarning("Le format de l'adresse email est incorrecte.");
                 return false;
             }
         }
@@ -119,8 +119,8 @@ namespace Assets.Scripts
             else
             {
                 errorImageBG.gameObject.SetActive(true);
-                errorMessage.text = "Le format de votre Nom d'utilisateur est incorrect.";
-                Debug.LogWarning("Le format de votre Nom d'utilisateur est incorrect.");
+                errorMessage.text = LocalizationSystem.GetLocalizedValue(Constants.error_username_format_lbl); ;
+                //Debug.LogWarning("Le format de votre Nom d'utilisateur est incorrect.");
                 return false;
             }
         }
@@ -139,8 +139,8 @@ namespace Assets.Scripts
             else
             {
                 errorImageBG.gameObject.SetActive(true);
-                errorMessage.text = "Les mots de passe doivent contenir au moins 8 caractères et contenir au moins : majuscules, minuscules, chiffres et symboles.";
-                Debug.LogWarning("Le format du Mot de passe est incorrect.");
+                errorMessage.text = LocalizationSystem.GetLocalizedValue(Constants.error_password_format_lbl); 
+                //Debug.LogWarning("Le format du Mot de passe est incorrect.");
                 return false;
             }
         }
@@ -152,7 +152,7 @@ namespace Assets.Scripts
             {
                 errorImageBG.gameObject.SetActive(true);
             }
-            signUpSent.text = "Un mail de confirmation de creation de compte vous a été envoyé. \nMerci de cliquer sur le lien dans le mail pour finaliser votre inscription.";
+            signUpSent.text = LocalizationSystem.GetLocalizedValue(Constants.signup_validation_email_lbl);
         }
 
 

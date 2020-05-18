@@ -39,9 +39,9 @@ namespace Assets.Scripts
 
         private void Start()
         {
-            if (SceneManager.GetSceneByName("LoadingScene").isLoaded == true)
+            if (SceneManager.GetSceneByName(Constants.SCENE_LOADING).isLoaded == true)
             {
-                SceneManager.UnloadSceneAsync("LoadingScene");
+                SceneManager.UnloadSceneAsync(Constants.SCENE_LOADING);
             }
         }
 
@@ -75,17 +75,17 @@ namespace Assets.Scripts
         }
         public void GoToSignUpPage()
         {
-            if (SceneManager.GetSceneByName("SignUp").isLoaded == false)
+            if (SceneManager.GetSceneByName(Constants.SCENE_SIGNUP).isLoaded == false)
             {
-                if (SceneManager.GetSceneByName("Authentication").isLoaded)
+                if (SceneManager.GetSceneByName(Constants.SCENE_AUTHENTICATION).isLoaded)
                 {
-                    SceneManager.UnloadSceneAsync("Authentication");
+                    SceneManager.UnloadSceneAsync(Constants.SCENE_AUTHENTICATION);
                 }
-                SceneManager.LoadSceneAsync("SignUp", LoadSceneMode.Additive);
+                SceneManager.LoadSceneAsync(Constants.SCENE_SIGNUP, LoadSceneMode.Additive);
             }
             else
             {
-                SceneManager.UnloadSceneAsync("SignUp");
+                SceneManager.UnloadSceneAsync(Constants.SCENE_SIGNUP);
             }
         }
 
@@ -103,8 +103,8 @@ namespace Assets.Scripts
             else
             {
                 errorImageBG.gameObject.SetActive(true);
-                errorMessage.text = "Le nom de compte est incorrect.";
-                Debug.LogWarning("Le format de votre Nom d'utilisateur est incorrect.");
+                errorMessage.text = LocalizationSystem.GetLocalizedValue(Constants.error_username_format_lbl);
+                //Debug.LogWarning("Le format de votre Nom d'utilisateur est incorrect.");
                 return false;
             }
         }
@@ -123,8 +123,8 @@ namespace Assets.Scripts
             else
             {
                 errorImageBG.gameObject.SetActive(true);
-                errorMessage.text = "Votre mot de passe est incorrect.";
-                Debug.LogWarning("Le format du Mot de passe est incorrect.");
+                errorMessage.text = LocalizationSystem.GetLocalizedValue(Constants.error_password_format_lbl);
+                //Debug.LogWarning("Le format du Mot de passe est incorrect.");
                 return false;
             }
         }
