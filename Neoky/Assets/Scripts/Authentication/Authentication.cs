@@ -26,7 +26,7 @@ namespace Assets.Scripts
 
         // AWS Inputs
 
-        public Text errorMessage;
+        public TMP_Text errorMessage;
         //public Text signUpSent;
         public Image errorImageBG;
 
@@ -47,6 +47,8 @@ namespace Assets.Scripts
 
         public void AuthenticateUsers()
         {
+
+            //ClientSend.TEST("TEST");
             //Debug.Log("Authentication Required for " + _username.text);
             if (CheckUserPattern(_username.text))
             {

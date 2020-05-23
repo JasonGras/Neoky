@@ -16,27 +16,27 @@ namespace Assets.Scripts
         // Start is called before the first frame update
         void Start()
         {
-           // if (Client.instance.tcp.socket.Connected)
-           //{
-           StartCoroutine(LoadAsyncOperation());
-
-            /*}
+            if (Client.instance.tcp.socket.Connected && Client.instance.myId != 0)
+            {
+                StartCoroutine(LoadAsyncOperation());
+            }
             else
             {
-                Debug.LogError("Serveur de Jeu indisponible pour le moment.");
+                GameManager.instance.SwitchToScene(Constants.SCENE_MAINTENANCE, Constants.SCENE_LOADING);
+                //SceneManager.LoadSceneAsync(Constants.SCENE_MAINTENANCE, LoadSceneMode.Additive);
+                Debug.Log("Serveur de Jeu indisponible pour le moment.");
                 // [AF] Affichage Serveur Indisponible (Image ?)
                 // [AF] Show Bouton Retry Connexion
-            }*/
+            }
         }
         
         IEnumerator LoadAsyncOperation()
         {
-            AsyncOperation loadingScene = SceneManager.LoadSceneAsync("Authentication", LoadSceneMode.Additive);
+            AsyncOperation loadingScene = SceneManager.LoadSceneAsync(Constants.SCENE_AUTHENTICATION, LoadSceneMode.Additive);
             
 
             while (!loadingScene.isDone)
             {
-
                 _progressBar.fillAmount = loadingScene.progress;
                 yield return new WaitForEndOfFrame();
             }

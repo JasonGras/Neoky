@@ -60,7 +60,6 @@ namespace Assets.Scripts
             tcp.Connect(); // Connect tcp, udp gets connected once tcp is done
             if (tcp.socket.Connected)
                 isConnected = true;
-
         }
 
         public class TCP
@@ -81,7 +80,7 @@ namespace Assets.Scripts
                 };
 
                 receiveBuffer = new byte[dataBufferSize];
-                IAsyncResult _result = socket.BeginConnect(instance.ip, instance.port, ConnectCallback, socket);
+                IAsyncResult _result = socket.BeginConnect(instance.ip, instance.port, ConnectCallback, socket);                
 
                 /*Check if GUID is Known, if it is => Authenticate the Client*/
                 //Debug.Log(Client.instance.myGUID.ToString());

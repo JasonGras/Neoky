@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Assets.Scripts
 {
@@ -51,6 +52,16 @@ namespace Assets.Scripts
                 SendUDPData(_packet);
             }
         }*/
+        /*public static void TEST(string _scenes)
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.switchScene))
+            {
+                _packet.Write(_scenes);//Desired Scene Name
+
+                Debug.Log($"Desired New Scene: {_scenes}");
+                SendTCPData(_packet);
+            }
+        }*/
 
         /// <summary>Sends player desired Scene to the server.</summary>
         public static void SwitchScene(string _scenes)
@@ -66,18 +77,28 @@ namespace Assets.Scripts
             }
         }
 
-        public static void SignUpToCognito(string _username, string _password, string _email)
+        public static string SignUpToCognito(string _username, string _password, string _email)
         {
-            using (Packet _packet = new Packet((int)ClientPackets.signUp))
+            if(Client.instance.tcp.socket.Connected && Client.instance.myId != 0 )
             {
-                _packet.Write(Client.instance.myId);
-                _packet.Write(_username);//Desired Scene Name
-                _packet.Write(_password);//Desired Scene Name
-                _packet.Write(_email);//Desired Scene Name
+                using (Packet _packet = new Packet((int)ClientPackets.signUp))
+                {
+                    _packet.Write(Client.instance.myId);
+                    _packet.Write(_username);//Desired Scene Name
+                    _packet.Write(_password);//Desired Scene Name
+                    _packet.Write(_email);//Desired Scene Name
 
-                //Debug.Log($"Desired New Scene: {_scenes}");
-                SendTCPData(_packet);
+                    //Debug.Log($"Desired New Scene: {_scenes}");
+                    SendTCPData(_packet);
+                    return "SIGN_UP_SEND_OK";
+                }
             }
+            else
+            {
+                Debug.LogError("TCP Connexion not established");
+                return "SIGN_UP_SEND_KO";
+            }
+            
         }
 
         public static void LogInToCognito(string _username, string _password)

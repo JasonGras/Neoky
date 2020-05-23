@@ -57,10 +57,21 @@ namespace Assets.Scripts
                         {
                             errorImageBG.gameObject.SetActive(false);
                         }
-                        errorMessage.text = "";                        
-                        ClientSend.SignUpToCognito(username.text, password.text, email.text);//.SwitchScene(Constants.SCENE_HOMEPAGE);
-                        //_ = SignUpUser(username.text, password.text, email.text, CLIENTAPP_ID);
+                        errorMessage.text = "";
+                        string response = ClientSend.SignUpToCognito(username.text, password.text, email.text);//.SwitchScene(Constants.SCENE_HOMEPAGE);
 
+                        switch (response)
+                        {
+                            case "SIGN_UP_SEND_OK" :
+                                SignUpFinalised();
+                                break;
+                            case "SIGN_UP_SEND_KO":
+                                SignUpShowError(Constants.signup_failed_lbl);
+                                break;
+                            default:
+                                SignUpShowError(Constants.technical_error_lbl);
+                                break;
+                        }
                     }
                 }
             }
@@ -153,6 +164,14 @@ namespace Assets.Scripts
                 errorImageBG.gameObject.SetActive(true);
             }
             signUpSent.text = LocalizationSystem.GetLocalizedValue(Constants.signup_validation_email_lbl);
+        }
+        public void SignUpShowError(string _message)
+        {
+            if (!errorImageBG.gameObject.activeSelf)
+            {
+                errorImageBG.gameObject.SetActive(true);
+            }
+            errorMessage.text = LocalizationSystem.GetLocalizedValue(_message);
         }
 
 

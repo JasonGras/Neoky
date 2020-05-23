@@ -10,7 +10,7 @@ namespace Assets.Scripts
         {
             Debug.Log("Login To Server.");
             Client.instance.ConnectToServer();
-            SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
+            SceneManager.LoadSceneAsync(Constants.SCENE_LOADING, LoadSceneMode.Additive);
         }
     }
 }
