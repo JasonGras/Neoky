@@ -23,11 +23,14 @@ namespace Assets.Scripts
         public static void SpawnPlayer(Packet _packet)
         {
             int _id = _packet.ReadInt();
-            //string _username = _packet.ReadString();
+            string _username = _packet.ReadString();
+            float _level = _packet.ReadFloat();
+            float _levelxp = _packet.ReadFloat();
+            float _requiredLvlUpXp = _packet.ReadFloat();
             string _startScene = _packet.ReadString();
             string _oldScene = _packet.ReadString();
 
-            GameManager.instance.SpawnPlayer(_id, _startScene, _oldScene);
+            GameManager.instance.SpawnPlayer(_id, _username, _level, _levelxp, _requiredLvlUpXp,_startScene, _oldScene);
         }
 
         /*public static void SpawnPlayer(Packet _packet)
@@ -70,10 +73,10 @@ namespace Assets.Scripts
                     Debug.Log("Creation de Compte Finalisée.");
                         break;
                 case "ADHESION_KO":
-                    Debug.LogError("Votre création de compte a échoué, merci de réessayer ultérieurement.");
+                    Debug.Log("Votre création de compte a échoué, merci de réessayer ultérieurement.");
                     break;
                 default:
-                    Debug.LogError("Une erreur technique est survenue, merci de réessayer ultérieurement.");
+                    Debug.Log("Une erreur technique est survenue, merci de réessayer ultérieurement.");
                     break;
             }
         }
@@ -91,12 +94,16 @@ namespace Assets.Scripts
                     Debug.Log("Authentification réussie.");
                     //AccessHomePage();
                     break;
+                case "AUTHENTICATION_USER_CONFIRMED_KO":
+                    Debug.Log("User Not confirmed, please confirm your email before log In.");
+                    Authentication.Auth.UpdateSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.authentication_non_confirmed_user_lbl));
+                    break;
                 case "AUTHENTICATION_KO":
-                    Debug.LogError("Votre authentification a échoué, merci de réessayer ultérieurement.");
+                    Debug.Log("Votre authentification a échoué, merci de réessayer ultérieurement.");
                     Authentication.Auth.UpdateSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.authentication_failed_lbl));
                     break;
                 default:
-                    Debug.LogError("Une erreur technique est survenue, merci de réessayer ultérieurement.");
+                    Debug.Log("Une erreur technique est survenue, merci de réessayer ultérieurement.");
                     break;
             }
         }

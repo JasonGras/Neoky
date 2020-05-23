@@ -34,9 +34,22 @@ namespace Assets.Scripts
         public TMP_InputField _username;
         public TMP_InputField _password;
         public Button _connexion;
-        
-        //public InputField _password;  
 
+        //public InputField _password;  
+        private void Awake()
+        {
+            if (Auth == null)
+            {
+                Auth = this;
+            }
+            else if (Auth != this)
+            {
+                Debug.Log("Instance already exists, destroying object!");
+                Destroy(this);
+            }
+            //myGUID = GUID.Generate(); 
+            //Id = GetId();
+        }
         private void Start()
         {
             if (SceneManager.GetSceneByName(Constants.SCENE_LOADING).isLoaded == true)
@@ -63,7 +76,7 @@ namespace Assets.Scripts
                     if (!Client.instance.tcp.socket.Connected)
                     {
                         _connexion.enabled = true;
-                        Debug.LogError("Le serveur de jeu est inacessible pour le moment, veuillez réessayer ultèrieurement.");
+                        Debug.Log("Le serveur de jeu est inacessible pour le moment, veuillez réessayer ultèrieurement.");
                         //Client.instance.tcp.Connect(); // Connect tcp, udp gets connected once tcp is done
                     }
                     else

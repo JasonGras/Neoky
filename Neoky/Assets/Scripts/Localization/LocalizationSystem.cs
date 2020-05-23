@@ -12,7 +12,7 @@ public class LocalizationSystem
     }
 
 
-    public static Language language = Language.English;
+    public static Language language = Language.French;
 
     private static Dictionary<string, string> localizedEN;
     private static Dictionary<string, string> localizedFR;

@@ -26,6 +26,8 @@ namespace Assets.Scripts
         public const string authentication_failed_lbl = "authentication_failed_lbl";
         public const string signup_failed_lbl = "signup_failed_lbl";
         public const string technical_error_lbl = "technical_error_lbl";
+        public const string authentication_non_confirmed_user_lbl = "authentication_non_confirmed_user_lbl";
+        public const string text_level_lbl = "text_level_lbl";
 
 
     }

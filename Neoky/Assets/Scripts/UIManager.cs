@@ -7,7 +7,7 @@ namespace Assets.Scripts
 {
     public class UIManager : MonoBehaviour
     {
-        public static UIManager instance;
+        //public static UIManager instance;
 
         public GameObject startMenu;
         public InputField usernameField;
@@ -19,7 +19,7 @@ namespace Assets.Scripts
         #endregion
 
 
-        private void Awake()
+        /*private void Awake()
         {
             if (instance == null)
             {
@@ -30,7 +30,7 @@ namespace Assets.Scripts
                 Debug.Log("Instance already exists, destroying object!");
                 Destroy(this);
             }
-        }
+        }*/
 
         /// <summary>Attempts to connect to the server.</summary>
         //public void ConnectToServer()
