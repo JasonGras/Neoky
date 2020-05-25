@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
@@ -58,6 +59,15 @@ namespace Assets.Scripts
             }*/
             //ClientSend.WelcomeReceived(); 
             GameManager.instance.SwitchToScene(_newScene, _oldScene);
+        }
+
+        public static void RedefineMyPassword(Packet _packet)
+        {
+            string _msg = _packet.ReadString();
+            int _myId = _packet.ReadInt();
+
+            // Send my Client to Redefine Password Scene
+            GameManager.instance.SwitchToScene(Constants.SCENE_REDEFINEPASSWORD,Constants.SCENE_AUTHENTICATION);
         }
 
         public static void SignUpReturn(Packet _packet)

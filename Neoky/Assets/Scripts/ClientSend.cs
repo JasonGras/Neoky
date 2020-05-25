@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -73,6 +74,20 @@ namespace Assets.Scripts
                 _packet.Write(_scenes);//Desired Scene Name
 
                 Debug.Log($"Desired New Scene: {_scenes}");
+                SendTCPData(_packet);
+            }
+        }
+
+        public static void RedefinedUserPassword(string _username, string _currentPassword, string _newPassword)
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.redefinedPwd))
+            {
+                _packet.Write(Client.instance.myId);
+                _packet.Write(_username);
+                _packet.Write(_currentPassword);
+                _packet.Write(_newPassword);
+
+                Debug.Log("RedefinedUserPassword Packet Sent");
                 SendTCPData(_packet);
             }
         }

@@ -31,8 +31,9 @@ namespace Assets.Scripts
         public static SignUpScript SignUpInst;
         //private AmazonCognitoIdentityProviderClient _client;
         // UNITY Inputs
-        public Text errorMessage;
-        public Text signUpSent;
+        public TMP_Text errorMessage;
+        public TMP_Text signUpSent;
+
         public Image errorImageBG;
 
         public TMP_InputField username;

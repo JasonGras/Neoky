@@ -16,6 +16,7 @@ namespace Assets.Scripts
         public const string SCENE_SIGNUP = "SignUp";   
         public const string SCENE_AUTHENTICATION = "Authentication";   
         public const string SCENE_MAINTENANCE = "Maintenance"; 
+        public const string SCENE_REDEFINEPASSWORD = "ChangePassword"; 
 
         /*Error Label_id*/
 

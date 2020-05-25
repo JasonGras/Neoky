@@ -15,6 +15,7 @@ namespace Assets.Scripts
         signUpStatus,
         signInStatus,
         signInToken,
+        redefinePassword,
         playerDisconnected
         /*        
         
@@ -36,11 +37,12 @@ namespace Assets.Scripts
 
     /// <summary>Sent from client to server.</summary>
     public enum ClientPackets
-    {
+    {   // Attention l'ordre est important !!
         welcomeReceived = 1,        
         switchScene,
         signUp,
         signIn,
+        redefinedPwd,
         accessHomePage
         //playerMovement,
     }
