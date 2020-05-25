@@ -21,7 +21,7 @@
 "error_password_format_lbl","Passwords must contain at least 8 characters and contain at least : upper and lower case letters, numbers and symbols.","Les mots de passe doivent contenir au moins 8 caractères et contenir au moins : majuscules, minuscules, chiffres et symboles."
 "error_confirmed_password_format_lbl","Password and his confirmation are not equals.","Les deux mot de passe saisis ne sont pas identiques."
 "signup_validation_email_lbl","An account creation confirmation email has been sent to you. Please click on the link in the email to finalize your registration.","Un mail de confirmation de creation de compte vous a été envoyé. Merci de cliquer sur le lien dans le mail pour finaliser votre inscription."
-"authentication_failed_lbl","Incorrect username or password.","nom de compte ou mot de passe incorrect."
+"authentication_failed_lbl","Incorrect username or password.","Nom de compte ou mot de passe incorrect."
 "signup_failed_lbl","Your registration failed, please try later.","Votre inscription a échoué, merci de réessayer ultérieurement."
 "technical_error_lbl","A technical error has occurred, please try again later.","Une erreur technique est survenue, merci de réessayer ultérieurement."
 "authentication_non_confirmed_user_lbl","This user is not confirmed, please click on the link of the email confirmation.","Un mail vous a été envoyé pour vous authentifier, merci de cliquer sur le lien pour confirmer votre compte."

@@ -9,6 +9,9 @@ namespace Assets.Scripts
 {
     public class RedefinePasswordScript : MonoBehaviour
     {
+
+        public static RedefinePasswordScript RedefinePwd;
+
         // UNITY Inputs
         public TMP_Text errorMessage;
 
@@ -20,6 +23,21 @@ namespace Assets.Scripts
         public TMP_InputField confirmedNewPassword;
 
         public Button RedefinePwdBtn;
+
+        private void Awake()
+        {
+            if (RedefinePwd == null)
+            {
+                RedefinePwd = this;
+            }
+            else if (RedefinePwd != this)
+            {
+                Debug.Log("Instance already exists, destroying object!");
+                Destroy(this);
+            }
+            //myGUID = GUID.Generate(); 
+            //Id = GetId();
+        }
 
         public void SubmitRedefinedPassword()
         {
@@ -101,5 +119,15 @@ namespace Assets.Scripts
                 return false;
             }
         }
+        public void UpdateSceneMessage(string message)
+        {
+            RedefinePwdBtn.enabled = true;
+            if (!errorImageBG.gameObject.activeSelf)
+            {
+                errorImageBG.gameObject.SetActive(true);
+            }
+            errorMessage.text = message;
+        }
+
     }
 }

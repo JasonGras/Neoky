@@ -115,6 +115,10 @@ namespace Assets.Scripts
                 case "AUTHENTICATION_KO":
                     Debug.Log("Votre authentification a échoué, merci de réessayer ultérieurement.");
                     Authentication.Auth.UpdateSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.authentication_failed_lbl));
+                    break; 
+                case "AUTHENTICATION_REDEFINE_PWD_KO":
+                    Debug.Log("Votre authentification a échoué, merci de réessayer ultérieurement.");
+                    RedefinePasswordScript.RedefinePwd.UpdateSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.authentication_failed_lbl));
                     break;
                 default:
                     Debug.Log("Une erreur technique est survenue, merci de réessayer ultérieurement.");
