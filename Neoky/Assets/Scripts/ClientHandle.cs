@@ -69,9 +69,13 @@ namespace Assets.Scripts
 
             switch (_returnStatus)
             {
+                case "ADHESION_ALREADY_EXIST":
+                    SignUpScript.SignUpInst.UpdateSceneSignUpErrorMessage(LocalizationSystem.GetLocalizedValue(Constants.sign_up_user_already_exist));
+                    break;
                 case "ADHESION_OK":
                     Debug.Log("Creation de Compte Finalisée.");
-                        break;
+                    SignUpScript.SignUpInst.UpdateSceneSignUpSuccessMessage(LocalizationSystem.GetLocalizedValue(Constants.signup_validation_email_lbl));
+                    break;
                 case "ADHESION_KO":
                     Debug.Log("Votre création de compte a échoué, merci de réessayer ultérieurement.");
                     break;

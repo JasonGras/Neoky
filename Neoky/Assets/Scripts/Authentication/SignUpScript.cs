@@ -18,6 +18,7 @@ using Amazon.Runtime.Internal;
 using System.Text.RegularExpressions;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections;
 
 // Required for the GetS3BucketsAsync example
 //using Amazon.S3;
@@ -27,6 +28,7 @@ namespace Assets.Scripts
 {
     public class SignUpScript : MonoBehaviour
     {
+        public static SignUpScript SignUpInst;
         //private AmazonCognitoIdentityProviderClient _client;
         // UNITY Inputs
         public Text errorMessage;
@@ -35,9 +37,24 @@ namespace Assets.Scripts
 
         public TMP_InputField username;
         public TMP_InputField password;
+        public TMP_InputField confirmedPassword;
         public TMP_InputField email;
         public Button signUpBtn;
 
+        private void Awake()
+        {
+            if (SignUpInst == null)
+            {
+                SignUpInst = this;
+            }
+            else if (SignUpInst != this)
+            {
+                Debug.Log("Instance already exists, destroying object!");
+                Destroy(this);
+            }
+            //myGUID = GUID.Generate(); 
+            //Id = GetId();
+        }
         // Au chargement de la page, je me connecte au serveur
         private void Start()
         {
@@ -50,32 +67,54 @@ namespace Assets.Scripts
             {
                 if (CheckPasswordPattern(password.text))
                 {
-                    if (CheckEmailPattern(email.text))
+                    if (CheckConfirmedPasswordPattern(confirmedPassword.text))
                     {
-                        signUpBtn.enabled = false;
-                        if (errorImageBG.gameObject.activeSelf)
+                        if (CheckEmailPattern(email.text))
                         {
-                            errorImageBG.gameObject.SetActive(false);
-                        }
-                        errorMessage.text = "";
-                        string response = ClientSend.SignUpToCognito(username.text, password.text, email.text);//.SwitchScene(Constants.SCENE_HOMEPAGE);
+                            signUpBtn.enabled = false;
+                            if (errorImageBG.gameObject.activeSelf)
+                            {
+                                errorImageBG.gameObject.SetActive(false);
+                            }
+                            errorMessage.text = "";
+                            string response = ClientSend.SignUpToCognito(username.text, password.text, email.text);//.SwitchScene(Constants.SCENE_HOMEPAGE);
 
-                        switch (response)
-                        {
-                            case "SIGN_UP_SEND_OK" :
-                                SignUpFinalised();
-                                break;
-                            case "SIGN_UP_SEND_KO":
-                                SignUpShowError(Constants.signup_failed_lbl);
-                                break;
-                            default:
-                                SignUpShowError(Constants.technical_error_lbl);
-                                break;
+                            // Gestion des erreur au niveau de l'envoi du SignUp
+                            switch (response)
+                            {
+                                case "SIGN_UP_SEND_OK":
+                                    SignUpFinalised();
+                                    break;
+                                case "SIGN_UP_SEND_KO":
+                                    SignUpShowError(Constants.signup_failed_lbl);
+                                    break;
+                                default:
+                                    SignUpShowError(Constants.technical_error_lbl);
+                                    break;
+                            }
                         }
                     }
                 }
             }
 
+        }
+        public void UpdateSceneSignUpErrorMessage(string message)
+        {
+            signUpBtn.enabled = true;
+            if (!errorImageBG.gameObject.activeSelf)
+            {
+                errorImageBG.gameObject.SetActive(true);
+            }
+            errorMessage.text = message;
+        }
+        public void UpdateSceneSignUpSuccessMessage(string message)
+        {
+            signUpBtn.enabled = true;
+            if (!errorImageBG.gameObject.activeSelf)
+            {
+                errorImageBG.gameObject.SetActive(true);
+            }
+            signUpSent.text = message;
         }
 
         public void GoToPreviousPage() // Return our Canceel Btn to go to previous page
@@ -155,6 +194,20 @@ namespace Assets.Scripts
                 return false;
             }
         }
+        public bool CheckConfirmedPasswordPattern(string _text)
+        {
+            if (_text == password.text)
+            {
+                return true;
+            }
+            else
+            {
+                errorImageBG.gameObject.SetActive(true);
+                errorMessage.text = LocalizationSystem.GetLocalizedValue(Constants.error_confirmed_password_format_lbl);
+                //Debug.LogWarning("Le format du Mot de passe est incorrect.");
+                return false;
+            }
+        }
 
         //Pas encore trouvé pour l'appeler cette Fonction.
         public void SignUpFinalised()
@@ -163,8 +216,12 @@ namespace Assets.Scripts
             {
                 errorImageBG.gameObject.SetActive(true);
             }
-            signUpSent.text = LocalizationSystem.GetLocalizedValue(Constants.signup_validation_email_lbl);
+            username.enabled = false;
+            password.enabled = false;
+            email.enabled = false;
+            //signUpSent.text = LocalizationSystem.GetLocalizedValue(Constants.signup_validation_email_lbl);             
         }
+
         public void SignUpShowError(string _message)
         {
             if (!errorImageBG.gameObject.activeSelf)

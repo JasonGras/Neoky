@@ -27,6 +27,7 @@ namespace Assets.Scripts
         // AWS Inputs
 
         public TMP_Text errorMessage;
+        public TMP_Text successMessage;
         //public Text signUpSent;
         public Image errorImageBG;
 
@@ -153,6 +154,16 @@ namespace Assets.Scripts
             }
             errorMessage.text = message;
         }
-        
+
+        public void UpdateSceneSuccessMessage(string message)
+        {
+            _connexion.enabled = true;
+            if (!errorImageBG.gameObject.activeSelf)
+            {
+                errorImageBG.gameObject.SetActive(true);
+            }
+            successMessage.text = message;
+        }
+
     }
 }
