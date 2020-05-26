@@ -95,7 +95,27 @@ namespace Assets.Scripts
             }
         }
 
-        public static void SignInReturn(Packet _packet)
+        public static void ForgotPasswordReturn(Packet _packet)
+        {
+            string _returnStatus = _packet.ReadString();
+            int _myId = _packet.ReadInt();
+
+            switch (_returnStatus)
+            {
+                case "FORGOT_PASSWORD_CONFIRMED":
+                    Debug.Log("Votre nouveau mot de passe a bien été mis a jours.");
+                    ForgotPasswordScript.ForgotPwd.UpdateSuccessSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.forgot_password_success_lbl));
+                    break;
+                case "FORGOT_PASSWORD_CODE_EXPIRED_KO":
+                    ForgotPasswordScript.ForgotPwd.UpdateErrorSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.forgot_password_code_expire_lbl));
+                    break;
+                default:
+                    Debug.Log("Une erreur technique est survenue, merci de réessayer ultérieurement.");
+                    break;
+            }
+        }
+
+            public static void SignInReturn(Packet _packet)
         {
             string _returnStatus = _packet.ReadString();
             int _myId = _packet.ReadInt();
@@ -106,18 +126,21 @@ namespace Assets.Scripts
             {
                 case "AUTHENTICATION_OK":
                     Debug.Log("Authentification réussie.");
-                    //AccessHomePage();
                     break;
                 case "AUTHENTICATION_USER_CONFIRMED_KO":
                     Debug.Log("User Not confirmed, please confirm your email before log In.");
                     Authentication.Auth.UpdateSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.authentication_non_confirmed_user_lbl));
+                    break;
+                case "AUTHENTICATION_KO_RESET_PWD_REQUIRED":
+                    Debug.Log("Votre authentification a échoué, merci de réessayer ultérieurement.");
+                    Authentication.Auth.UpdateSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.sign_in_redefine_pwd_required));
                     break;
                 case "AUTHENTICATION_KO":
                     Debug.Log("Votre authentification a échoué, merci de réessayer ultérieurement.");
                     Authentication.Auth.UpdateSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.authentication_failed_lbl));
                     break; 
                 case "AUTHENTICATION_REDEFINE_PWD_KO":
-                    Debug.Log("Votre authentification a échoué, merci de réessayer ultérieurement.");
+                    Debug.Log("Votre authentification a échoué depuis la page Redefine PWD, merci de réessayer ultérieurement.");
                     RedefinePasswordScript.RedefinePwd.UpdateSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.authentication_failed_lbl));
                     break;
                 default:

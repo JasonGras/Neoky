@@ -16,15 +16,19 @@ namespace Assets.Scripts
         // Start is called before the first frame update
         void Start()
         {
-            if (Client.instance.tcp.socket.Connected && Client.instance.myId != 0)
+            if (Client.instance.tcp.socket.Connected)
             {
                 StartCoroutine(LoadAsyncOperation());
             }
             else
             {
+
+                Debug.Log("LoadFirstScene.cs | Server injoignable.");
+                Debug.Log("LoadFirstScene.cs | Socket.Connected :" + Client.instance.tcp.socket.Connected+" | Client.instance.myId :"+ Client.instance.myId);
+
                 GameManager.instance.SwitchToScene(Constants.SCENE_MAINTENANCE, Constants.SCENE_LOADING);
                 //SceneManager.LoadSceneAsync(Constants.SCENE_MAINTENANCE, LoadSceneMode.Additive);
-                Debug.Log("Serveur de Jeu indisponible pour le moment.");
+                //Debug.Log("LoadFirstScene.cs | Serveur de Jeu indisponible pour le moment.");
                 // [AF] Affichage Serveur Indisponible (Image ?)
                 // [AF] Show Bouton Retry Connexion
             }

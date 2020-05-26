@@ -87,7 +87,33 @@ namespace Assets.Scripts
                 _packet.Write(_currentPassword);
                 _packet.Write(_newPassword);
 
-                Debug.Log("RedefinedUserPassword Packet Sent");
+                Debug.Log("ClientSend.cs | RedefinedUserPassword Packet Sent");
+                SendTCPData(_packet);
+            }
+        }
+
+        public static void ForgotUserPassword(string _username, string _code,string _newPwd)
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.forgotPwd))
+            {
+                _packet.Write(Client.instance.myId);
+                _packet.Write(_username);
+                _packet.Write(_code);
+                _packet.Write(_newPwd);
+
+                Debug.Log("ClientSend.cs | ForgotUserPassword Packet Sent");
+                SendTCPData(_packet);
+            }
+        }
+        public static void ForgotPasswordRequest(string _username, string _email)
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.forgotPwdRequest))
+            {
+                _packet.Write(Client.instance.myId);
+                _packet.Write(_username);
+                _packet.Write(_email);
+
+                Debug.Log("ClientSend.cs | ForgotPasswordRequest Packet Sent");
                 SendTCPData(_packet);
             }
         }

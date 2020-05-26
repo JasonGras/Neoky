@@ -21,6 +21,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Authenticate/ChangePassword.unity
     guid: 8de014a424c4cd34885927a818d45249
   - enabled: 1
+    path: Assets/Scenes/Authenticate/ForgotPassword.unity
+    guid: 372f22abb20f90847bed8281e201b306
+  - enabled: 1
+    path: Assets/Scenes/Authenticate/ForgotPasswordRequest.unity
+    guid: c7d70002f8b71f6478ee535cb924c448
+  - enabled: 1
     path: Assets/Scenes/Authenticate/SignUp.unity
     guid: 972461714efef504f88e29b9859dcdea
   - enabled: 1

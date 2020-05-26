@@ -89,7 +89,7 @@ namespace Assets.Scripts
             }
             //_ = AuthenticateFoncAsync(_username.text, _password.text);
         }
-        public void GoToSignUpPage()
+        public void GoToSignUpPage() // Called by SignUp Btn
         {
             if (SceneManager.GetSceneByName(Constants.SCENE_SIGNUP).isLoaded == false)
             {
@@ -102,6 +102,22 @@ namespace Assets.Scripts
             else
             {
                 SceneManager.UnloadSceneAsync(Constants.SCENE_SIGNUP);
+            }
+        }
+
+        public void GoToForgotPasswordPage() // Called by Forgot Pwd Link Btn
+        {
+            if (SceneManager.GetSceneByName(Constants.SCENE_FORGOT_PASSWORD_REQUEST).isLoaded == false)
+            {
+                if (SceneManager.GetSceneByName(Constants.SCENE_AUTHENTICATION).isLoaded)
+                {
+                    SceneManager.UnloadSceneAsync(Constants.SCENE_AUTHENTICATION);
+                }
+                SceneManager.LoadSceneAsync(Constants.SCENE_FORGOT_PASSWORD_REQUEST, LoadSceneMode.Additive);
+            }
+            else
+            {
+                SceneManager.UnloadSceneAsync(Constants.SCENE_FORGOT_PASSWORD_REQUEST);
             }
         }
 

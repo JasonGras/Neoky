@@ -16,23 +16,8 @@ namespace Assets.Scripts
         signInStatus,
         signInToken,
         redefinePassword,
+        forgotPwdStatus,
         playerDisconnected
-        /*        
-        
-        playerPosition,
-        playerRotation,        
-        
-        /*playerHealth,
-        playerRespawned,
-        createItemSpawner,
-        itemSpawned,
-        itemPickedUp,
-        spawnProjectile,
-        projectilePosition,
-        projectileExploded,
-        spawnEnemy,
-        enemyPosition,
-        enemyHealth*/
     }
 
     /// <summary>Sent from client to server.</summary>
@@ -43,6 +28,8 @@ namespace Assets.Scripts
         signUp,
         signIn,
         redefinedPwd,
+        forgotPwd,
+        forgotPwdRequest,
         accessHomePage
         //playerMovement,
     }

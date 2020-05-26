@@ -9,9 +9,11 @@ namespace Assets.Scripts
     {
         public void ReconnexionButton()
         {
-            Debug.Log("Reconnexion To Server.");
+            Debug.Log("Reconnexion To Server Lunch.");
             Client.instance.ConnectToServer();
+            Debug.Log("Reconnexion To Server Done.");
             GameManager.instance.SwitchToScene(Constants.SCENE_LOADING, Constants.SCENE_MAINTENANCE);
+            Debug.Log("Go To LoadingScene Done.");
             //SceneManager.LoadSceneAsync(Constants.SCENE_LOADING, LoadSceneMode.Additive);
         }
     }

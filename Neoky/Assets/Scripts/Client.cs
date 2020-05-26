@@ -316,6 +316,7 @@ namespace Assets.Scripts
             { (int)ServerPackets.signInStatus, ClientHandle.SignInReturn },
             { (int)ServerPackets.signInToken, ClientHandle.SignInTokens },
             { (int)ServerPackets.redefinePassword, ClientHandle.RedefineMyPassword },
+            { (int)ServerPackets.forgotPwdStatus, ClientHandle.ForgotPasswordReturn },
             /*
             { (int)ServerPackets.playerPosition, ClientHandle.PlayerPosition },
             { (int)ServerPackets.playerRotation, ClientHandle.PlayerRotation },            

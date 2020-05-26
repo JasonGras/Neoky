@@ -17,6 +17,8 @@ namespace Assets.Scripts
         public const string SCENE_AUTHENTICATION = "Authentication";   
         public const string SCENE_MAINTENANCE = "Maintenance"; 
         public const string SCENE_REDEFINEPASSWORD = "ChangePassword"; 
+        public const string SCENE_FORGOT_PASSWORD = "ForgotPassword"; 
+        public const string SCENE_FORGOT_PASSWORD_REQUEST = "ForgotPasswordREquest"; 
 
         /*Error Label_id*/
 
@@ -31,6 +33,11 @@ namespace Assets.Scripts
         public const string authentication_non_confirmed_user_lbl = "authentication_non_confirmed_user_lbl";
         public const string text_level_lbl = "text_level_lbl";
         public const string sign_up_user_already_exist = "sign_up_user_already_exist";
+        public const string sign_in_redefine_pwd_required = "sign_in_redefine_pwd_required";
+        // Forgot Password
+        public const string forgot_password_success_lbl = "forgot_password_success_lbl";
+        public const string forgot_password_failed_lbl = "forgot_password_failed_lbl";
+        public const string forgot_password_code_expire_lbl = "forgot_password_code_expire_lbl";
 
 
     }
