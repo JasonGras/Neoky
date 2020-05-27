@@ -109,6 +109,9 @@ namespace Assets.Scripts
                 case "FORGOT_PASSWORD_CODE_EXPIRED_KO":
                     ForgotPasswordScript.ForgotPwd.UpdateErrorSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.forgot_password_code_expire_lbl));
                     break;
+                case "FORGOT_PASSWORD_CODE_MISMATCH_KO":
+                    ForgotPasswordScript.ForgotPwd.UpdateErrorSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.forgot_password_code_mismatch_lbl));
+                    break;                    
                 default:
                     Debug.Log("Une erreur technique est survenue, merci de réessayer ultérieurement.");
                     break;

@@ -38,6 +38,7 @@ namespace Assets.Scripts
         public const string forgot_password_success_lbl = "forgot_password_success_lbl";
         public const string forgot_password_failed_lbl = "forgot_password_failed_lbl";
         public const string forgot_password_code_expire_lbl = "forgot_password_code_expire_lbl";
+        public const string forgot_password_code_mismatch_lbl = "forgot_password_code_mismatch_lbl";
 
 
     }

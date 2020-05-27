@@ -32,3 +32,4 @@
 "sign_in_redefine_pwd_required","Redefine a Password with the code recieved by Email on the "Forgotten Password" Page","Redéfinissez votre mot de passe avec le code fourni par Email en vous rendant sur la page "Mot de passe Oublié"."
 "forgot_password_success_lbl","Your new password is now activated.","Votre nouveau mot de passe a bien été mis a jours."
 "forgot_password_code_expire_lbl","Your code provided has expired, please request a code again.","Le code saisi est invalide ou a expiré, merci de redemander un code."
+"forgot_password_code_mismatch_lbl","Please check you send the right Email code.","Veuillez vérifier que le code envoyé est le bon."
