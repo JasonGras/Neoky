@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using TMPro.EditorUtilities;
+//using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(TMP_InputField))]
+//[RequireComponent(typeof(TMP_InputField))]
 public class InputFieldsTMPLocalizerUI : MonoBehaviour
 {
     TMP_Text textBtn;

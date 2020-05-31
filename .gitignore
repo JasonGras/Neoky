@@ -9,6 +9,7 @@ Neoky/[Bb]uild/
 Neoky/[Bb]uilds/
 Neoky/[Ll]ogs/
 Neoky/[Mm]emoryCaptures/
+Neoky/[Aa]ssets/Low_Swordman*
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/Neoky/[Aa]ssets/**/*.meta

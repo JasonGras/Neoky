@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Advertisements;
+//using UnityEngine.Advertisements;
 
 public class AdManager : MonoBehaviour
 {    
@@ -10,14 +11,20 @@ public class AdManager : MonoBehaviour
 
     void Start()
     {
-        Advertisement.Initialize(gameId, testMode);
+        //Advertisement.Initialize(gameId, testMode);
     }
 
     public void GetFreeReward()
     {
-        if (Advertisement.IsReady("video"))
+        /*if (Advertisement.IsReady("video"))
         {
             Advertisement.Show("video"); //or empty
         }
+        */
+    }
+
+    public void isStillAuthenticated()
+    {
+        ClientSend.isStillAuthenticated();
     }
 }

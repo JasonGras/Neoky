@@ -17,6 +17,8 @@ namespace Assets.Scripts
         signInToken,
         redefinePassword,
         forgotPwdStatus,
+        spawnEnemyAllCrew,
+        spawnPlayerAllCrew,
         playerDisconnected
     }
 
@@ -30,7 +32,9 @@ namespace Assets.Scripts
         redefinedPwd,
         forgotPwd,
         forgotPwdRequest,
-        accessHomePage
+        stillAuthenticated,
+        enterDungeon,
+        FightPacket
         //playerMovement,
     }
 
@@ -384,6 +388,32 @@ namespace Assets.Scripts
         public UserSession ReadUserSession(bool _moveReadPos = true)
         {
             return new UserSession(ReadString(_moveReadPos), ReadString(_moveReadPos), ReadString(_moveReadPos));
+        }
+        
+        /// <summary>Reads a UserSession from the packet.</summary>
+        /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
+        public Dictionary<int, NeokyCollection> ReadEnemyCrew(int _enemyCount, bool _moveReadPos = true)
+        {           
+            Dictionary<int, NeokyCollection> _DicoEnemyCrew = new Dictionary<int, NeokyCollection>();
+            try
+            {
+                for (int i = 0; i < _enemyCount; i++)
+                {
+                    _DicoEnemyCrew.Add(ReadInt(_moveReadPos), ReadNeokyCollection(_moveReadPos));
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception("Could not read value of type 'Dictionary<int, NeokyCollection>'!");
+            }
+            return _DicoEnemyCrew;
+        }
+
+        /// <summary>Reads a UserSession from the packet.</summary>
+        /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
+        public NeokyCollection ReadNeokyCollection(bool _moveReadPos = true)
+        {
+            return new NeokyCollection(ReadString(_moveReadPos), ReadString(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
         }
 
         /// <summary>Reads a Quaternion from the packet.</summary>

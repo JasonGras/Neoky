@@ -11,6 +11,9 @@ namespace Assets.Scripts
         public float level;
         public float levelXp;
         public float requiredLvlUpXp;
+
+        
+
         //public float health;
         //public float maxHealth = 100f;
         //public int itemCount = 0;

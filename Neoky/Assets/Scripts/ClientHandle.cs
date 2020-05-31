@@ -29,35 +29,46 @@ namespace Assets.Scripts
             float _levelxp = _packet.ReadFloat();
             float _requiredLvlUpXp = _packet.ReadFloat();
             string _startScene = _packet.ReadString();
-            string _oldScene = _packet.ReadString();
+            string _unloadScene = _packet.ReadString();
 
-            GameManager.instance.SpawnPlayer(_id, _username, _level, _levelxp, _requiredLvlUpXp,_startScene, _oldScene);
+            GameManager.instance.SpawnPlayer(_id, _username, _level, _levelxp, _requiredLvlUpXp,_startScene, _unloadScene);
+        }       
+
+        public static void SpawnTheEnemyAllCrewMember(Packet _packet)
+        {
+            Dictionary<int, NeokyCollection> _AllCrewPosition = new Dictionary<int, NeokyCollection>();
+
+            int _id = _packet.ReadInt();
+            int _enemyCount = _packet.ReadInt();
+            _AllCrewPosition = _packet.ReadEnemyCrew(_enemyCount);            
+
+            Debug.Log("New EnemyAllCrew recieved !");
+            GameManager.instance.SpawnAllEnemyMemberCrew(_AllCrewPosition);
+
+            _AllCrewPosition.Clear();
         }
 
-        /*public static void SpawnPlayer(Packet _packet)
+        public static void SpawnThePlayerAllCrewMember(Packet _packet)
         {
-            int _id = _packet.ReadInt();
-            string _username = _packet.ReadString();
-            Vector3 _position = _packet.ReadVector3();
-            Quaternion _rotation = _packet.ReadQuaternion();
+            Dictionary<int, NeokyCollection> _AllCrewPosition = new Dictionary<int, NeokyCollection>();
 
-            GameManager.instance.SpawnPlayer(_id, _username, _position, _rotation);
-        }*/
+            int _id = _packet.ReadInt();
+            int _crewCount = _packet.ReadInt();
+            _AllCrewPosition = _packet.ReadEnemyCrew(_crewCount);
+
+            Debug.Log("New PlayerAllCrew recieved !");
+            GameManager.instance.SpawnAllPlayerMemberCrew(_AllCrewPosition);
+
+            _AllCrewPosition.Clear();
+        }
 
         public static void SwitchToScene(Packet _packet)
         {
             string _newScene = _packet.ReadString();
             string _oldScene = _packet.ReadString();
-
             int _myId = _packet.ReadInt();
 
             Debug.Log($"New Scene Recieved : {_newScene}");
-
-            /*if (GameManager.players.TryGetValue(_myId, out PlayerManager _player))
-            {
-                _player.currentScene... ?
-            }*/
-            //ClientSend.WelcomeReceived(); 
             GameManager.instance.SwitchToScene(_newScene, _oldScene);
         }
 
@@ -160,131 +171,6 @@ namespace Assets.Scripts
             Client.instance.myCurrentSession = _clientTokens;
 
         }
-
-        /*public static void PlayerPosition(Packet _packet)
-        {
-            int _id = _packet.ReadInt();
-            Vector3 _position = _packet.ReadVector3();
-
-            if (GameManager.players.TryGetValue(_id, out PlayerManager _player))
-            {
-                _player.transform.position = _position;
-            }
-        }*/
-        /*
-        public static void PlayerRotation(Packet _packet)
-        {
-            int _id = _packet.ReadInt();
-            Quaternion _rotation = _packet.ReadQuaternion();
-
-            if (GameManager.players.TryGetValue(_id, out PlayerManager _player))
-            {
-                _player.transform.rotation = _rotation;
-            }
-        }
-
-        public static void PlayerDisconnected(Packet _packet)
-        {
-            int _id = _packet.ReadInt();
-
-            Destroy(GameManager.players[_id].gameObject);
-            GameManager.players.Remove(_id);
-        }
-
-        public static void PlayerHealth(Packet _packet)
-        {
-            int _id = _packet.ReadInt();
-            float _health = _packet.ReadFloat();
-
-            GameManager.players[_id].SetHealth(_health);
-        }
-
-        public static void PlayerRespawned(Packet _packet)
-        {
-            int _id = _packet.ReadInt();
-
-            GameManager.players[_id].Respawn();
-        }
-
-        public static void CreateItemSpawner(Packet _packet)
-        {
-            int _spawnerId = _packet.ReadInt();
-            Vector3 _spawnerPosition = _packet.ReadVector3();
-            bool _hasItem = _packet.ReadBool();
-
-            GameManager.instance.CreateItemSpawner(_spawnerId, _spawnerPosition, _hasItem);
-        }
-
-        public static void ItemSpawned(Packet _packet)
-        {
-            int _spawnerId = _packet.ReadInt();
-
-            GameManager.itemSpawners[_spawnerId].ItemSpawned();
-        }
-
-        public static void ItemPickedUp(Packet _packet)
-        {
-            int _spawnerId = _packet.ReadInt();
-            int _byPlayer = _packet.ReadInt();
-
-            GameManager.itemSpawners[_spawnerId].ItemPickedUp();
-            GameManager.players[_byPlayer].itemCount++;
-        }
-
-        public static void SpawnProjectile(Packet _packet)
-        {
-            int _projectileId = _packet.ReadInt();
-            Vector3 _position = _packet.ReadVector3();
-            int _thrownByPlayer = _packet.ReadInt();
-
-            GameManager.instance.SpawnProjectile(_projectileId, _position);
-            GameManager.players[_thrownByPlayer].itemCount--;
-        }
-
-        public static void ProjectilePosition(Packet _packet)
-        {
-            int _projectileId = _packet.ReadInt();
-            Vector3 _position = _packet.ReadVector3();
-
-            if (GameManager.projectiles.TryGetValue(_projectileId, out ProjectileManager _projectile))
-            {
-                _projectile.transform.position = _position;
-            }
-        }
-
-        public static void ProjectileExploded(Packet _packet)
-        {
-            int _projectileId = _packet.ReadInt();
-            Vector3 _position = _packet.ReadVector3();
-
-            GameManager.projectiles[_projectileId].Explode(_position);
-        }
-
-        public static void SpawnEnemy(Packet _packet)
-        {
-            int _enemyId = _packet.ReadInt();
-            Vector3 _position = _packet.ReadVector3();
-
-            GameManager.instance.SpawnEnemy(_enemyId, _position);
-        }
-
-        public static void EnemyPosition(Packet _packet)
-        {
-            int _enemyId = _packet.ReadInt();
-            Vector3 _position = _packet.ReadVector3();
-
-            if (GameManager.enemies.TryGetValue(_enemyId, out EnemyManager _enemy))
-            {
-                _enemy.transform.position = _position;
-            }
-        }
-
-        public static void EnemyHealth(Packet _packet)
-        {
-            int _enemyId = _packet.ReadInt();
-            float _health = _packet.ReadFloat();
-
-            GameManager.enemies[_enemyId].SetHealth(_health);
-        }*/
+        
     }
 }

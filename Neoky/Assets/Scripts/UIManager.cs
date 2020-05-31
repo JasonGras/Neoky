@@ -16,29 +16,9 @@ namespace Assets.Scripts
         #region Menu Btn
         public Button homeButton;
         public Button collectionButton;        
+        public Button Btn_03;        
         #endregion
 
-
-        /*private void Awake()
-        {
-            if (instance == null)
-            {
-                instance = this;
-            }
-            else if (instance != this)
-            {
-                Debug.Log("Instance already exists, destroying object!");
-                Destroy(this);
-            }
-        }*/
-
-        /// <summary>Attempts to connect to the server.</summary>
-        //public void ConnectToServer()
-        //{
-        //    startMenu.SetActive(false);
-        //    usernameField.interactable = false;
-        //    Client.instance.ConnectToServer();
-        //}
         public void ShowCollection()
         {
             //startMenu.SetActive(false);
@@ -48,10 +28,11 @@ namespace Assets.Scripts
         }
         public void ShowHomePage()
         {
-            //startMenu.SetActive(false);
-            //homeButton.interactable = false;
             ClientSend.SwitchScene(Constants.SCENE_HOMEPAGE);
-
+        }
+        public void ShowNewScene()
+        {
+            ClientSend.EnterDungeon("instance_01_name");
         }
     }
 }

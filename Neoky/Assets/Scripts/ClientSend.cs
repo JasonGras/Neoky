@@ -78,6 +78,32 @@ namespace Assets.Scripts
             }
         }
 
+        public static void EnterDungeon(string _DungeonName)
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.enterDungeon))
+            {
+                _packet.Write(Client.instance.myId);
+                _packet.Write(Client.instance.myCurrentSession);
+                _packet.Write(_DungeonName);//Desired Scene Name
+
+                Debug.Log($"Desired enter Dungeon: {_DungeonName}");
+                SendTCPData(_packet);
+            }
+        }
+
+        public static void FightPackets(string _status)
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.FightPacket))
+            {
+                _packet.Write(Client.instance.myId);
+                _packet.Write(Client.instance.myCurrentSession);
+                _packet.Write(_status);//Desired Scene Name
+
+                Debug.Log($"Fight Packets on my Scene: {_status}");
+                SendTCPData(_packet);
+            }
+        }
+
         public static void RedefinedUserPassword(string _username, string _currentPassword, string _newPassword)
         {
             using (Packet _packet = new Packet((int)ClientPackets.redefinedPwd))
@@ -155,9 +181,9 @@ namespace Assets.Scripts
             }
         }
 
-        public static void AccessHomePage()
+        public static void isStillAuthenticated()
         {
-            using (Packet _packet = new Packet((int)ClientPackets.accessHomePage))
+            using (Packet _packet = new Packet((int)ClientPackets.stillAuthenticated))
             {
                 _packet.Write(Client.instance.myId);
                 _packet.Write(Client.instance.myCurrentSession);
