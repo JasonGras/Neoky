@@ -48,6 +48,21 @@ namespace Assets.Scripts
             _AllCrewPosition.Clear();
         }
 
+        public static void GetAllPlayerCollection(Packet _packet)
+        {
+            Dictionary<string,Dictionary<string, int>> _AllPlayerUnits = new Dictionary<string, Dictionary<string, int>>();
+
+            int _id = _packet.ReadInt();
+            int _unitsCount = _packet.ReadInt();
+            int _unitsStatCount = _packet.ReadInt();
+            _AllPlayerUnits = _packet.ReadAllPlayerUnits(_unitsCount, _unitsStatCount);
+
+            Debug.Log("Player Collection recieved !");
+            GameManager.instance.UpdateAllPlayerUnits(_AllPlayerUnits);
+
+            //_AllPlayerUnits.Clear();
+        }
+
         public static void SpawnThePlayerAllCrewMember(Packet _packet)
         {
             Dictionary<int, NeokyCollection> _AllCrewPosition = new Dictionary<int, NeokyCollection>();
@@ -75,7 +90,7 @@ namespace Assets.Scripts
         public static void RedefineMyPassword(Packet _packet)
         {
             string _msg = _packet.ReadString();
-            int _myId = _packet.ReadInt();
+            int _myId = _packet.ReadInt();            
 
             // Send my Client to Redefine Password Scene
             GameManager.instance.SwitchToScene(Constants.SCENE_REDEFINEPASSWORD,Constants.SCENE_AUTHENTICATION);
@@ -116,13 +131,18 @@ namespace Assets.Scripts
                 case "FORGOT_PASSWORD_CONFIRMED":
                     Debug.Log("Votre nouveau mot de passe a bien été mis a jours.");
                     ForgotPasswordScript.ForgotPwd.UpdateSuccessSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.forgot_password_success_lbl));
+                    ForgotPasswordScript.ForgotPwd.UpdateMyFinalForm();
                     break;
                 case "FORGOT_PASSWORD_CODE_EXPIRED_KO":
                     ForgotPasswordScript.ForgotPwd.UpdateErrorSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.forgot_password_code_expire_lbl));
                     break;
                 case "FORGOT_PASSWORD_CODE_MISMATCH_KO":
                     ForgotPasswordScript.ForgotPwd.UpdateErrorSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.forgot_password_code_mismatch_lbl));
-                    break;                    
+                    break;
+                case "NEW_CODE_SEND_EMAIL":
+                    ForgotPasswordScript.ForgotPwd.UpdateMyForm();
+                    ForgotPasswordScript.ForgotPwd.UpdateSuccessSceneMessage(LocalizationSystem.GetLocalizedValue(Constants.code_send_success_lbl));
+                    break;
                 default:
                     Debug.Log("Une erreur technique est survenue, merci de réessayer ultérieurement.");
                     break;

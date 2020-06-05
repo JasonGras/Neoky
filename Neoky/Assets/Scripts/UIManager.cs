@@ -9,22 +9,19 @@ namespace Assets.Scripts
     {
         //public static UIManager instance;
 
-        public GameObject startMenu;
-        public InputField usernameField;
+        //public GameObject startMenu;
+        //public InputField usernameField;
 
         /*Menu Btn*/
         #region Menu Btn
-        public Button homeButton;
-        public Button collectionButton;        
-        public Button Btn_03;        
+        //public Button homeButton;
+        //public Button collectionButton;        
+        //public Button Btn_03;        
         #endregion
 
         public void ShowCollection()
-        {
-            //startMenu.SetActive(false);
-            //collectionButton.interactable = false;           
-            ClientSend.SwitchScene(Constants.SCENE_COLLECTION);
-
+        {  
+            ClientSend.UpdatePlayerCollection();
         }
         public void ShowHomePage()
         {

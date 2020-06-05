@@ -19,6 +19,7 @@ namespace Assets.Scripts
         forgotPwdStatus,
         spawnEnemyAllCrew,
         spawnPlayerAllCrew,
+        getAllPlayerUnits,
         playerDisconnected
     }
 
@@ -34,7 +35,8 @@ namespace Assets.Scripts
         forgotPwdRequest,
         stillAuthenticated,
         enterDungeon,
-        FightPacket
+        FightPacket,
+        updateCollection
         //playerMovement,
     }
 
@@ -411,10 +413,61 @@ namespace Assets.Scripts
 
         /// <summary>Reads a UserSession from the packet.</summary>
         /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
+        public Dictionary<int, NeokyCollection> ReadPlayerUnits(int _unitsCount, bool _moveReadPos = true)
+        {
+            Dictionary<int, NeokyCollection> _DicoPlayerUnits = new Dictionary<int, NeokyCollection>();
+            try
+            {
+                for (int i = 0; i < _unitsCount; i++)
+                {
+                    _DicoPlayerUnits.Add(ReadInt(_moveReadPos), ReadNeokyCollection(_moveReadPos));
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Could not read value of type 'Dictionary<int, NeokyCollection>'!");
+            }
+            return _DicoPlayerUnits;
+        }
+
+        /// <summary>Reads a UserSession from the packet.</summary>
+        /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
+        public Dictionary<string, Dictionary<string, int>> ReadAllPlayerUnits(int _unitsCount, int _unitsStatsCount, bool _moveReadPos = true)
+        {
+            Dictionary<string,Dictionary<string, int>> _DicoPlayerUnits = new Dictionary<string, Dictionary<string, int>>();
+            try
+            {
+                for (int i = 0; i < _unitsCount; i++)
+                {
+                    _DicoPlayerUnits.Add(ReadString(_moveReadPos), ReadPlayerUnitsDetail(_unitsStatsCount, _moveReadPos));
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Could not read value of type 'Dictionary<int, NeokyCollection>'!");
+            }
+            return _DicoPlayerUnits;
+        }
+
+        /// <summary>Reads a UserSession from the packet.</summary>
+        /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
         public NeokyCollection ReadNeokyCollection(bool _moveReadPos = true)
         {
             return new NeokyCollection(ReadString(_moveReadPos), ReadString(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
         }
+
+        /// <summary>Reads a UserSession from the packet.</summary>
+        /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
+        public Dictionary<string, int> ReadPlayerUnitsDetail(int _unitsStatsCount, bool _moveReadPos = true)
+        {
+            Dictionary<string, int> openWith = new Dictionary<string, int>();
+            for (int i = 0; i < _unitsStatsCount; i++)
+            {
+                openWith.Add(ReadString(_moveReadPos), ReadInt(_moveReadPos));
+            }
+
+            return openWith;
+        }        
 
         /// <summary>Reads a Quaternion from the packet.</summary>
         /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>

@@ -18,7 +18,7 @@ namespace Assets.Scripts
         public Image errorImageBG;
 
         public TMP_InputField username;
-        public TMP_InputField email;
+        //public TMP_InputField email;
 
         public Button RedefinePwdBtn;
 
@@ -39,22 +39,17 @@ namespace Assets.Scripts
         {
             if (CheckUserPattern(username.text))
             {
-                if (CheckEmailPattern(email.text))  
-                {
                     RedefinePwdBtn.enabled = false;
                     if (errorImageBG.gameObject.activeSelf)
                     {
                         errorImageBG.gameObject.SetActive(false);
                     }
                     errorMessage.text = "";
-                    Debug.Log("ForgotPasswordRequest sent with my Data : " + username.text + " | " + email.text);
+                    Debug.Log("ForgotPasswordRequest sent with my Data : " + username.text);
 
                     // Ask server to redefine PWD
-                    ClientSend.ForgotPasswordRequest(username.text, email.text);
-                    GameManager.instance.SwitchToScene(Constants.SCENE_FORGOT_PASSWORD, Constants.SCENE_FORGOT_PASSWORD_REQUEST);
-                }
-
-
+                    ClientSend.ForgotPasswordRequest(username.text);
+                    //GameManager.instance.SwitchToScene(Constants.SCENE_FORGOT_PASSWORD, Constants.SCENE_FORGOT_PASSWORD_REQUEST);   
             }
 
         }
@@ -79,25 +74,6 @@ namespace Assets.Scripts
             }
         }
 
-        public bool CheckEmailPattern(string _text)
-        {
-            string pattern;
-            pattern = @"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"; // Email pattern
-
-            Regex rgx = new Regex(pattern);
-
-            if (rgx.IsMatch(_text))
-            {
-                return true;
-            }
-            else
-            {
-                errorImageBG.gameObject.SetActive(true);
-                errorMessage.text = LocalizationSystem.GetLocalizedValue(Constants.error_email_format_lbl);
-                //Debug.LogWarning("Le format de l'adresse email est incorrecte.");
-                return false;
-            }
-        }
         public void UpdateErrorSceneMessage(string message)
         {
             RedefinePwdBtn.enabled = true;

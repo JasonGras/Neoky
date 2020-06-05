@@ -63,7 +63,8 @@ namespace Assets.Scripts
         {
 
             //ClientSend.TEST("TEST");
-            //Debug.Log("Authentication Required for " + _username.text);
+            Debug.Log("Authentication Required for " + _username.text);
+
             if (CheckUserPattern(_username.text))
             {
                 if (CheckPasswordPattern(_password.text))

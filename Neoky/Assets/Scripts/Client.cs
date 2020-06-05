@@ -319,6 +319,7 @@ namespace Assets.Scripts
             { (int)ServerPackets.forgotPwdStatus, ClientHandle.ForgotPasswordReturn },
             { (int)ServerPackets.spawnEnemyAllCrew, ClientHandle.SpawnTheEnemyAllCrewMember },
             { (int)ServerPackets.spawnPlayerAllCrew, ClientHandle.SpawnThePlayerAllCrewMember },
+            { (int)ServerPackets.getAllPlayerUnits, ClientHandle.GetAllPlayerCollection },
         };
             Debug.Log("Initialized packets.");
         }

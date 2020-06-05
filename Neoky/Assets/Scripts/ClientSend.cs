@@ -91,6 +91,20 @@ namespace Assets.Scripts
             }
         }
 
+        public static void UpdatePlayerCollection()
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.updateCollection))
+            {
+                _packet.Write(Client.instance.myId);
+                _packet.Write(Client.instance.myCurrentSession);
+
+                Debug.Log($"UpdatePlayerCollection");
+                SendTCPData(_packet);
+            }
+        }
+
+        
+
         public static void FightPackets(string _status)
         {
             using (Packet _packet = new Packet((int)ClientPackets.FightPacket))
@@ -131,13 +145,12 @@ namespace Assets.Scripts
                 SendTCPData(_packet);
             }
         }
-        public static void ForgotPasswordRequest(string _username, string _email)
+        public static void ForgotPasswordRequest(string _username)
         {
             using (Packet _packet = new Packet((int)ClientPackets.forgotPwdRequest))
             {
                 _packet.Write(Client.instance.myId);
                 _packet.Write(_username);
-                _packet.Write(_email);
 
                 Debug.Log("ClientSend.cs | ForgotPasswordRequest Packet Sent");
                 SendTCPData(_packet);

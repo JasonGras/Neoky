@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
@@ -13,13 +15,16 @@ namespace Assets.Scripts
         public static Dictionary<int, PlayerManager> players = new Dictionary<int, PlayerManager>();
         public static Dictionary<int, GameObject> PlayerCrew = new Dictionary<int, GameObject>();
         public static Dictionary<int, GameObject> EnemyCrew = new Dictionary<int, GameObject>();
+        public static Dictionary<string, Dictionary<string,int>> AllPlayerUnits = new Dictionary<string, Dictionary<string, int>>();
 
         public GameObject netPlayerPrefab;
+
         [SerializeField]
         public List<GameObject> PlayerCollectionList;
 
-        
-        //public Dictionary<string, GameObject> PlayerCollectionList = new Dictionary<string, GameObject>();
+
+
+        //public Dictionary<string, GameObject> PlayerColle*ctionList = new Dictionary<string, GameObject>();
 
 
         private void Awake()
@@ -120,6 +125,49 @@ namespace Assets.Scripts
                 }
             }
         }
+
+        /// <summary>Spawns All player Crew</summary>
+        /// <param name="_id">The player's ID.</param>
+        /// <param name="_name">The member crew ID.</param>
+        public void UpdateAllPlayerUnits(Dictionary<string, Dictionary<string, int>> _allPlayerUnits)
+        {
+            AllPlayerUnits = _allPlayerUnits;
+            ClientSend.SwitchScene(Constants.SCENE_COLLECTION);
+        }
+
+
+        // Change Panel Image
+        // Change Panel Souls
+
+        // instantiate New Panel
+
+
+        // On PlayeCollectionUnit find the MemberCrewPrefab using _memberCrewPrefab Name
+        /*Debug.Log("Find Prefab in PlayerCollectionList");
+        GameObject unitCrewPrefab = PlayerCollectionList.Where<GameObject>(x => x.name == _crewUnit.Value.collection_prefab).SingleOrDefault();
+
+        if (unitCrewPrefab != null)
+        {
+            Transform Spawn = GameObject.Find("Spawn_Enemy_" + _crewUnit.Key.ToString()).transform;
+            // Create Player Prefab
+            Debug.Log("Instantiate Crew Prefab");
+            GameObject CrewMember = Instantiate(unitCrewPrefab, Spawn);
+            CrewMember.transform.parent = Spawn; // Set the Member Spawn on the Spawn_X position
+                                                 //CrewMember.transform.localPosition = new Vector3(0, 0, 0);
+                                                 // Initialize Player
+            CrewMember.GetComponent<CrewMembers>().Initialize(_crewUnit.Key, _crewUnit.Value.collection_name, _crewUnit.Value.lifePoints);
+
+            // Add player to a List of Players
+            Debug.Log("CrewMember added to EnemyCrew");
+            EnemyCrew.Add(_crewUnit.Key, CrewMember);
+        }
+        else
+        {
+            Debug.Log("You forgot to Add the Prefab of the Unit on the GameManager Size on the UnloadScene");
+        }*/
+    
+        
+        
 
 
         #region SCENE_MANAGEMENT

@@ -23,6 +23,8 @@ namespace Assets.Scripts
         public TMP_InputField code;
 
         public Button RedefinePwdBtn;
+        public Button BackAuthenticationBtn;
+        public Button GetCode;
 
         private void Awake()
         {
@@ -43,9 +45,9 @@ namespace Assets.Scripts
         {
             if (CheckUserPattern(username.text))
             {
-                if (CheckPasswordPattern(newPassword.text)) // Code Check ? 
+                if (CheckPasswordPattern(newPassword.text))  
                 {
-                    if (CheckConfirmedNewPasswordPattern(confirmationNewPassword.text)) // Code Check ? 
+                    if (CheckConfirmedNewPasswordPattern(confirmationNewPassword.text)) 
                     {
                         //if (CheckPasswordPattern(currentPassword.text)) // Code Check ? 
                         //{
@@ -67,6 +69,48 @@ namespace Assets.Scripts
             }
 
         }
+
+        public void SubmitForgotPasswordRequest()
+        {
+            if (CheckUserPattern(username.text))
+            {
+                RedefinePwdBtn.enabled = false;
+                if (errorImageBG.gameObject.activeSelf)
+                {
+                    errorImageBG.gameObject.SetActive(false);
+                }
+                errorMessage.text = "";
+                Debug.Log("ForgotPasswordRequest sent with my Data : " + username.text);
+
+                // Ask server to redefine PWD
+                ClientSend.ForgotPasswordRequest(username.text);                
+
+                //GameManager.instance.SwitchToScene(Constants.SCENE_FORGOT_PASSWORD, Constants.SCENE_FORGOT_PASSWORD_REQUEST);   
+            }
+
+        }
+
+
+        public void UpdateMyFinalForm()
+        {
+            username.interactable = false;
+            code.interactable = false;
+            newPassword.interactable = false;
+            confirmationNewPassword.interactable = false;
+            BackAuthenticationBtn.interactable = true;
+            RedefinePwdBtn.interactable = false;
+            GetCode.interactable = false;
+        } 
+        public void UpdateMyForm()
+        {
+            username.interactable = false;
+            code.interactable = true;
+            newPassword.interactable = true;
+            confirmationNewPassword.interactable = true;
+            BackAuthenticationBtn.interactable = true;
+            RedefinePwdBtn.interactable = true;
+            GetCode.interactable = false;
+        } 
 
         public bool CheckUserPattern(string _text)
         {
