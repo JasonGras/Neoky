@@ -432,14 +432,14 @@ namespace Assets.Scripts
 
         /// <summary>Reads a UserSession from the packet.</summary>
         /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
-        public Dictionary<string, Dictionary<string, int>> ReadAllPlayerUnits(int _unitsCount, int _unitsStatsCount, bool _moveReadPos = true)
+        public Dictionary<NeokyCollection, Dictionary<string, int>> ReadAllPlayerUnits(int _unitsCount, int _unitsStatsCount, bool _moveReadPos = true)
         {
-            Dictionary<string,Dictionary<string, int>> _DicoPlayerUnits = new Dictionary<string, Dictionary<string, int>>();
+            Dictionary<NeokyCollection, Dictionary<string, int>> _DicoPlayerUnits = new Dictionary<NeokyCollection, Dictionary<string, int>>();
             try
             {
                 for (int i = 0; i < _unitsCount; i++)
                 {
-                    _DicoPlayerUnits.Add(ReadString(_moveReadPos), ReadPlayerUnitsDetail(_unitsStatsCount, _moveReadPos));
+                    _DicoPlayerUnits.Add(ReadNeokyCollection(_moveReadPos), ReadPlayerUnitsDetail(_unitsStatsCount, _moveReadPos));
                 }
             }
             catch (Exception e)
@@ -453,7 +453,7 @@ namespace Assets.Scripts
         /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
         public NeokyCollection ReadNeokyCollection(bool _moveReadPos = true)
         {
-            return new NeokyCollection(ReadString(_moveReadPos), ReadString(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
+            return new NeokyCollection(ReadString(_moveReadPos), ReadString(_moveReadPos), ReadString(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
         }
 
         /// <summary>Reads a UserSession from the packet.</summary>

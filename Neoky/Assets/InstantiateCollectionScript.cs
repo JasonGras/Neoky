@@ -23,7 +23,7 @@ namespace Assets.Scripts
             CreateAllUnitPanel(GameManager.AllPlayerUnits);
         }
 
-        public void CreateAllUnitPanel(Dictionary<string, Dictionary<string,int>> Collection)
+        public void CreateAllUnitPanel(Dictionary<NeokyCollection, Dictionary<string,int>> Collection)
         {
             foreach (var collectionUnit in Collection)
             {
@@ -31,8 +31,10 @@ namespace Assets.Scripts
 
                 // Find my Image on my Panel Prefab
                 Image img_panel = _panel.gameObject.transform.Find("Image_Unit").GetComponent<Image>();
+
+                //string unitCrewPrefab = PlayerCollectionList.Where<string>(x => x. == _crewUnit.Value.collection_prefab).SingleOrDefault();
                 // Set my Image on my Panel Prefab
-                img_panel.sprite = Resources.Load<Sprite>("Collection/" + collectionUnit.Key);
+                img_panel.sprite = Resources.Load<Sprite>("Collection/" + collectionUnit.Key.collection_name+"/"+ collectionUnit.Key.collection_image);
                 foreach (var collectionUnitDetail in collectionUnit.Value)
                 {
                     try

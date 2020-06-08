@@ -50,7 +50,7 @@ namespace Assets.Scripts
 
         public static void GetAllPlayerCollection(Packet _packet)
         {
-            Dictionary<string,Dictionary<string, int>> _AllPlayerUnits = new Dictionary<string, Dictionary<string, int>>();
+            Dictionary<NeokyCollection, Dictionary<string, int>> _AllPlayerUnits = new Dictionary<NeokyCollection, Dictionary<string, int>>();
 
             int _id = _packet.ReadInt();
             int _unitsCount = _packet.ReadInt();

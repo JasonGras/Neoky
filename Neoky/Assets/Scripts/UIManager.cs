@@ -27,7 +27,7 @@ namespace Assets.Scripts
         {
             ClientSend.SwitchScene(Constants.SCENE_HOMEPAGE);
         }
-        public void ShowNewScene()
+        public void EnterDungeon()
         {
             ClientSend.EnterDungeon("instance_01_name");
         }

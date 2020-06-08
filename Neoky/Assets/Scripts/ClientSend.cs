@@ -37,6 +37,21 @@ namespace Assets.Scripts
             }
         }
 
+
+        public static void SendFightReady()
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.FightPacket))
+            {
+                _packet.Write(Client.instance.myId);
+                _packet.Write(Client.instance.myCurrentSession);
+                _packet.Write("FIGHT_READY");//Desired Scene Name
+
+                Debug.Log($"Fight READY Packets sent");
+                SendTCPData(_packet);
+            }
+
+        }
+
         /// <summary>Sends player input to the server.</summary>
         /// <param name="_inputs"></param>
         /*public static void PlayerMovement(bool[] _inputs)

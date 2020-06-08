@@ -7,10 +7,15 @@ namespace Assets.Scripts
 {
     public class cube_Controller : MonoBehaviour
     {
+        private void Start()
+        {
+            //ClientSend.FightPackets("INIT_FIGHT");
+        }
+
         // Update is called once per frame
         void Update()
         {
-
+            /*
             if (Input.touchCount > 0)
             {
                 Touch touch = Input.GetTouch(0);
@@ -24,7 +29,7 @@ namespace Assets.Scripts
                 //Use animation on touchPosition
 
             }
-            //ClientSend.UnitMoove(_inputs);
+            //ClientSend.UnitMoove(_inputs);*/
         }
     }
 }

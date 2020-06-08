@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -15,12 +16,16 @@ namespace Assets.Scripts
         public static Dictionary<int, PlayerManager> players = new Dictionary<int, PlayerManager>();
         public static Dictionary<int, GameObject> PlayerCrew = new Dictionary<int, GameObject>();
         public static Dictionary<int, GameObject> EnemyCrew = new Dictionary<int, GameObject>();
-        public static Dictionary<string, Dictionary<string,int>> AllPlayerUnits = new Dictionary<string, Dictionary<string, int>>();
+        public static Dictionary<NeokyCollection, Dictionary<string,int>> AllPlayerUnits = new Dictionary<NeokyCollection, Dictionary<string, int>>();
+        //public static List<NeokyCollection> AllGameUnits = new List<NeokyCollection>();
 
         public GameObject netPlayerPrefab;
 
-        [SerializeField]
-        public List<GameObject> PlayerCollectionList;
+        //[SerializeField]
+        //public List<GameObject> PlayerCollectionList;
+
+        public bool isSpawned_playerCrew { get; set; } = false;
+        public bool isSpawned_EnemyCrew { get; set; } = false;
 
 
 
@@ -64,18 +69,20 @@ namespace Assets.Scripts
         /// <param name="_name">The member crew ID.</param>
         public void SpawnAllPlayerMemberCrew(Dictionary<int, NeokyCollection> _playerAllCrew)
         {
+            isSpawned_playerCrew = false;
             foreach (var _crewUnit in _playerAllCrew)
             {
                 // On PlayeCollectionUnit find the MemberCrewPrefab using _memberCrewPrefab Name
                 Debug.Log("Find Prefab in PlayerCollectionList");
-                GameObject unitCrewPrefab = PlayerCollectionList.Where<GameObject>(x => x.name == _crewUnit.Value.collection_prefab).SingleOrDefault();
+                
+                //GameObject unitCrewPrefab = PlayerCollectionList.Where<GameObject>(x => x.name == _crewUnit.Value.collection_prefab).SingleOrDefault();
 
-                if (unitCrewPrefab != null)
+                if (_crewUnit.Value.local_Collection_prefab != null)
                 {
                     Transform Spawn = GameObject.Find("Spawn_Player_" + _crewUnit.Key.ToString()).transform;
                     // Create Player Prefab
                     Debug.Log("Instantiate Crew Prefab");
-                    GameObject CrewMember = Instantiate(unitCrewPrefab, Spawn);
+                    GameObject CrewMember = Instantiate(_crewUnit.Value.local_Collection_prefab, Spawn);
                     CrewMember.transform.parent = Spawn; // Set the Member Spawn on the Spawn_X position
                                                          //CrewMember.transform.localPosition = new Vector3(0, 0, 0);
                                                          // Initialize Player
@@ -90,7 +97,11 @@ namespace Assets.Scripts
                     Debug.Log("You forgot to Add the Prefab of the Unit on the GameManager Size on the UnloadScene");
                 }
             }
-            
+            isSpawned_playerCrew = true;
+            if (isSpawned_EnemyCrew)
+            {
+                ClientSend.SendFightReady();
+            }                
         }
 
         /// <summary>Spawns All player Crew</summary>
@@ -98,18 +109,19 @@ namespace Assets.Scripts
         /// <param name="_name">The member crew ID.</param>
         public void SpawnAllEnemyMemberCrew(Dictionary<int, NeokyCollection> _enemyAllCrew)
         {
+            isSpawned_EnemyCrew = false;
             foreach (var _crewUnit in _enemyAllCrew)
             {
                 // On PlayeCollectionUnit find the MemberCrewPrefab using _memberCrewPrefab Name
                 Debug.Log("Find Prefab in PlayerCollectionList");
-                GameObject unitCrewPrefab = PlayerCollectionList.Where<GameObject>(x => x.name == _crewUnit.Value.collection_prefab).SingleOrDefault();
+                //GameObject unitCrewPrefab = PlayerCollectionList.Where<GameObject>(x => x.name == _crewUnit.Value.collection_prefab).SingleOrDefault();
 
-                if (unitCrewPrefab != null)
+                if (_crewUnit.Value.local_Collection_prefab != null)
                 {
                     Transform Spawn = GameObject.Find("Spawn_Enemy_" + _crewUnit.Key.ToString()).transform;
                     // Create Player Prefab
                     Debug.Log("Instantiate Crew Prefab");
-                    GameObject CrewMember = Instantiate(unitCrewPrefab, Spawn);
+                    GameObject CrewMember = Instantiate(_crewUnit.Value.local_Collection_prefab, Spawn);
                     CrewMember.transform.parent = Spawn; // Set the Member Spawn on the Spawn_X position
                                                          //CrewMember.transform.localPosition = new Vector3(0, 0, 0);
                                                          // Initialize Player
@@ -124,12 +136,18 @@ namespace Assets.Scripts
                     Debug.Log("You forgot to Add the Prefab of the Unit on the GameManager Size on the UnloadScene");
                 }
             }
+            isSpawned_EnemyCrew = true;
+            if (isSpawned_playerCrew)
+            {
+                ClientSend.SendFightReady();
+            }
+            
         }
 
         /// <summary>Spawns All player Crew</summary>
         /// <param name="_id">The player's ID.</param>
         /// <param name="_name">The member crew ID.</param>
-        public void UpdateAllPlayerUnits(Dictionary<string, Dictionary<string, int>> _allPlayerUnits)
+        public void UpdateAllPlayerUnits(Dictionary<NeokyCollection, Dictionary<string, int>> _allPlayerUnits)
         {
             AllPlayerUnits = _allPlayerUnits;
             ClientSend.SwitchScene(Constants.SCENE_COLLECTION);
@@ -165,7 +183,8 @@ namespace Assets.Scripts
         {
             Debug.Log("You forgot to Add the Prefab of the Unit on the GameManager Size on the UnloadScene");
         }*/
-    
+
+        
         
         
 
