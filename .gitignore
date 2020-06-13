@@ -11,6 +11,7 @@ Neoky/[Ll]ogs/
 Neoky/[Mm]emoryCaptures/
 Neoky/[Aa]ssets/Low_Swordman*
 Neoky/[Aa]ssets/Simple UI*
+Neoky/[Aa]ssets/Build/*
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/Neoky/[Aa]ssets/**/*.meta
