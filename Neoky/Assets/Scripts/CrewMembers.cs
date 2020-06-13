@@ -13,6 +13,9 @@ namespace Assets.Scripts
         public string MemberName;
         public float MemberHP;
 
+        // Unit Level
+        //
+
         public void Initialize(int _memberPosition, string _memberName, float _memberHP)
         {
             MemberPosition = _memberPosition;

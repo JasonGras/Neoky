@@ -320,6 +320,7 @@ namespace Assets.Scripts
             { (int)ServerPackets.spawnEnemyAllCrew, ClientHandle.SpawnTheEnemyAllCrewMember },
             { (int)ServerPackets.spawnPlayerAllCrew, ClientHandle.SpawnThePlayerAllCrewMember },
             { (int)ServerPackets.getAllPlayerUnits, ClientHandle.GetAllPlayerCollection },
+            { (int)ServerPackets.callbackAttackPacket, ClientHandle.AttackCallback },
         };
             Debug.Log("Initialized packets.");
         }

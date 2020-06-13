@@ -30,8 +30,12 @@ namespace Assets.Scripts
             float _requiredLvlUpXp = _packet.ReadFloat();
             string _startScene = _packet.ReadString();
             string _unloadScene = _packet.ReadString();
+            float _golds = _packet.ReadFloat();
+            int _dicoCount = _packet.ReadInt();
+            Dictionary<string,int> _box = _packet.ReadDicoStringInt(_dicoCount);
+            float _diams = _packet.ReadFloat();
 
-            GameManager.instance.SpawnPlayer(_id, _username, _level, _levelxp, _requiredLvlUpXp,_startScene, _unloadScene);
+            GameManager.instance.SpawnPlayer(_id, _username, _level, _levelxp, _requiredLvlUpXp,_startScene, _unloadScene, _golds, _box, _diams);
         }       
 
         public static void SpawnTheEnemyAllCrewMember(Packet _packet)
@@ -47,6 +51,22 @@ namespace Assets.Scripts
 
             _AllCrewPosition.Clear();
         }
+
+        public static void AttackCallback(Packet _packet)
+        {
+            //Dictionary<NeokyCollection, Dictionary<string, int>> _AllPlayerUnits = new Dictionary<NeokyCollection, Dictionary<string, int>>();
+
+            int _id = _packet.ReadInt();
+            int _unitPlayerPosition = _packet.ReadInt();
+            int _unitEnemyPosition = _packet.ReadInt();
+
+            Debug.Log("Player N° " + _unitPlayerPosition.ToString() + " Attacked Enemy N° " + _unitEnemyPosition.ToString());
+            //GameManager.PlayerCrew.TryGetValue(_unitPlayerPosition, out _PlayerUnitGameObject);
+            GameManager.instance.CallbackPlayerAttack(_unitPlayerPosition, _unitEnemyPosition);
+
+            //_AllPlayerUnits.Clear();
+        }
+        
 
         public static void GetAllPlayerCollection(Packet _packet)
         {

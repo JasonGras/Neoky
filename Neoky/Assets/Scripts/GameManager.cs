@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -13,7 +14,7 @@ namespace Assets.Scripts
     {
         public static GameManager instance;
 
-        public static Dictionary<int, PlayerManager> players = new Dictionary<int, PlayerManager>();
+        //
         public static Dictionary<int, GameObject> PlayerCrew = new Dictionary<int, GameObject>();
         public static Dictionary<int, GameObject> EnemyCrew = new Dictionary<int, GameObject>();
         public static Dictionary<NeokyCollection, Dictionary<string,int>> AllPlayerUnits = new Dictionary<NeokyCollection, Dictionary<string, int>>();
@@ -45,16 +46,18 @@ namespace Assets.Scripts
             }
         }
 
+        public static Dictionary<int, PlayerManager> players = new Dictionary<int, PlayerManager>();
+
         /// <summary>Spawns a player.</summary>
         /// <param name="_id">The player's ID.</param>
         /// <param name="_name">The player's name.</param>
-        public void SpawnPlayer(int _id, string _username, float _level, float _levelxp, float _requiredLvlUpXp, string _startScene, string _unloadScene)
+        public void SpawnPlayer(int _id, string _username, float _level, float _levelxp, float _requiredLvlUpXp, string _startScene, string _unloadScene, float _golds, Dictionary<string,int> _box, float _diams)
         {
             // Create Player Prefab
             GameObject _player = Instantiate(netPlayerPrefab);       
             
             // Initialize Player
-            _player.GetComponent<PlayerManager>().Initialize(_id, _username, _level, _levelxp, _requiredLvlUpXp, _startScene);
+            _player.GetComponent<PlayerManager>().Initialize(_id, _username, _level, _levelxp, _requiredLvlUpXp, _startScene, _golds, _box, _diams);
 
             // Add player to a List of Players
             players.Add(_id, _player.GetComponent<PlayerManager>());
@@ -96,12 +99,37 @@ namespace Assets.Scripts
                 {
                     Debug.Log("You forgot to Add the Prefab of the Unit on the GameManager Size on the UnloadScene");
                 }
+
+
+                //Add Unit Image Btn
+
+                // Get the parent Location
+                Transform THorizontalBtnLayer = GameObject.Find("HorizontalBtnLayer").transform;
+                //GameObject UnitImageBtn = GameObject.Find("UnitImageBtn");
+                
+                // Instantiate the Btn Image
+                GameObject CrewMemberImgBtn = Instantiate(_crewUnit.Value.local_Collection_IMGBtn_prefab, THorizontalBtnLayer);
+                // Set The parent
+                //CrewMemberImgBtn.transform.parent = THorizontalBtnLayer;
+
+                // Set the Image of the Button
+                Image CrewUnitImageBtn =  CrewMemberImgBtn.GetComponent<Image>();
+                CrewUnitImageBtn.sprite = _crewUnit.Value.local_Collection_image;
+
+                CrewMemberImgBtn.GetComponentInChildren<Button>().onClick.AddListener(() => OnUseUnitBtn(_crewUnit.Key));
+
             }
             isSpawned_playerCrew = true;
             if (isSpawned_EnemyCrew)
             {
                 ClientSend.SendFightReady();
             }                
+        }
+
+        void OnUseUnitBtn(int _position)
+        {        
+            ClientSend.AttackPackets(_position,1);              
+            
         }
 
         /// <summary>Spawns All player Crew</summary>
@@ -153,6 +181,40 @@ namespace Assets.Scripts
             ClientSend.SwitchScene(Constants.SCENE_COLLECTION);
         }
 
+        /// <summary>Spawns All player Crew</summary>
+        /// <param name="_id">The player's ID.</param>
+        /// <param name="_name">The member crew ID.</param>
+       /* public void CallbackPlayerAttack(int _unitPosition, int _enemyPosition)
+        {
+            GameObject _PlayerUnitGameObject = new GameObject();
+            GameObject _EnemyUnitGameObject = new GameObject();
+
+            PlayerCrew.TryGetValue(_unitPosition, out _PlayerUnitGameObject);
+            EnemyCrew.TryGetValue(_enemyPosition, out _EnemyUnitGameObject);
+
+
+            Vector3 attackDir = (_EnemyUnitGameObject.transform.position - _PlayerUnitGameObject.transform.position).normalized;
+            var Anim = _PlayerUnitGameObject.GetComponent<Animator>();
+            
+            //Anim.
+        }*/
+
+
+
+        public void CallbackPlayerAttack(int _unitPosition, int _enemyPosition) // Action onAttackComplete
+        {
+            GameObject _PlayerUnitGameObject;
+            GameObject _EnemyUnitGameObject;
+
+            PlayerCrew.TryGetValue(_unitPosition, out _PlayerUnitGameObject);
+            EnemyCrew.TryGetValue(_enemyPosition, out _EnemyUnitGameObject);
+
+            UnitBattle _UnitBattle = _PlayerUnitGameObject.GetComponent<UnitBattle>();
+            _UnitBattle.Attack(_unitPosition, _enemyPosition);
+
+
+        }
+
 
         // Change Panel Image
         // Change Panel Souls
@@ -184,9 +246,9 @@ namespace Assets.Scripts
             Debug.Log("You forgot to Add the Prefab of the Unit on the GameManager Size on the UnloadScene");
         }*/
 
-        
-        
-        
+
+
+
 
 
         #region SCENE_MANAGEMENT

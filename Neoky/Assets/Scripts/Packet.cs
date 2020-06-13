@@ -20,6 +20,7 @@ namespace Assets.Scripts
         spawnEnemyAllCrew,
         spawnPlayerAllCrew,
         getAllPlayerUnits,
+        callbackAttackPacket,
         playerDisconnected
     }
 
@@ -36,7 +37,9 @@ namespace Assets.Scripts
         stillAuthenticated,
         enterDungeon,
         FightPacket,
-        updateCollection
+        updateCollection,
+        unitAttack,
+        attackPacket
         //playerMovement,
     }
 
@@ -467,7 +470,20 @@ namespace Assets.Scripts
             }
 
             return openWith;
-        }        
+        }
+
+        /// <summary>Reads a UserSession from the packet.</summary>
+        /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
+        public Dictionary<string, int> ReadDicoStringInt(int _unitsStatsCount, bool _moveReadPos = true)
+        {
+            Dictionary<string, int> openWith = new Dictionary<string, int>();
+            for (int i = 0; i < _unitsStatsCount; i++)
+            {
+                openWith.Add(ReadString(_moveReadPos), ReadInt(_moveReadPos));
+            }
+
+            return openWith;
+        }
 
         /// <summary>Reads a Quaternion from the packet.</summary>
         /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>

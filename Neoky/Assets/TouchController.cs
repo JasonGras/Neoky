@@ -24,22 +24,27 @@ namespace Assets.Scripts
             {
                 foreach (Touch touch in Input.touches)
                 {
+                    Vector3 pos = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, distFromCam));
                     if (touch.phase == TouchPhase.Began)
                     {
-                        Vector3 pos = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, distFromCam));
-                        emitter.transform.position = pos;
-                        emitter.Play();
+                        
+                        Debug.Log("TouchBegan : "+pos.x + " | " + pos.y + " | " + pos.z);
+                        //emitter.transform.position = pos;
+                        //emitter.Play();
                     }
                     if (touch.phase == TouchPhase.Ended)
                     {
+                        Debug.Log("TouchEnded : " + pos.x + " | " + pos.y + " | " + pos.z);
                         //recipient.SendMessage("OnTouchUp", hit.point, SendMessageOptions.DontRequireReceiver);
                     }
                     if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
                     {
+                        Debug.Log("TouchStationary : " + pos.x + " | " + pos.y + " | " + pos.z);
                         //recipient.SendMessage("OnTouchStay", hit.point, SendMessageOptions.DontRequireReceiver);
                     }
                     if (touch.phase == TouchPhase.Canceled) // Ipad on Face or 6 figers
                     {
+                        Debug.Log("TouchCanceled : " + pos.x + " | " + pos.y + " | " + pos.z);
                         //recipient.SendMessage("OnTouchExit", hit.point, SendMessageOptions.DontRequireReceiver);
                     }
                 }

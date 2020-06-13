@@ -14,7 +14,9 @@ namespace Assets.Scripts
 
         public GameObject local_Collection_prefab { get; set; }
 
-        public Image local_Collection_image { get; set; }
+        public GameObject local_Collection_IMGBtn_prefab { get; set; }
+
+        public Sprite local_Collection_image { get; set; }
 
         public float attackDamages { get; set; }
 
@@ -37,7 +39,8 @@ namespace Assets.Scripts
             lifePoints = _lifePoints;
 
             local_Collection_prefab = Resources.Load<GameObject>("Collection/"+ _collectionName+"/"+ _collectionPrefab);
-            local_Collection_image = Resources.Load<Image>("Collection/" + _collectionName + "/" + _collectionImage);
+            local_Collection_image = Resources.Load<Sprite>("Collection/" + _collectionName + "/" + _collectionImage);
+            local_Collection_IMGBtn_prefab = Resources.Load<GameObject>("Prefab/UnitImageBtn");
             //Debug.Log("prefab Found");
             //collection_prefab = _collectionPrefab;
         }
