@@ -51,13 +51,13 @@ namespace Assets.Scripts
         /// <summary>Spawns a player.</summary>
         /// <param name="_id">The player's ID.</param>
         /// <param name="_name">The player's name.</param>
-        public void SpawnPlayer(int _id, string _username, float _level, float _levelxp, float _requiredLvlUpXp, string _startScene, string _unloadScene, float _golds, Dictionary<string,int> _box, float _diams)
+        public void SpawnPlayer(int _id, string _username, float _level, float _levelxp, float _requiredLvlUpXp, string _startScene, string _unloadScene, float _golds, Dictionary<string,int> _coin, float _diams)
         {
             // Create Player Prefab
             GameObject _player = Instantiate(netPlayerPrefab);       
             
             // Initialize Player
-            _player.GetComponent<PlayerManager>().Initialize(_id, _username, _level, _levelxp, _requiredLvlUpXp, _startScene, _golds, _box, _diams);
+            _player.GetComponent<PlayerManager>().Initialize(_id, _username, _level, _levelxp, _requiredLvlUpXp, _startScene, _golds, _coin, _diams);
 
             // Add player to a List of Players
             players.Add(_id, _player.GetComponent<PlayerManager>());

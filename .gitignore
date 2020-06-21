@@ -15,6 +15,7 @@ Neoky/[Aa]ssets/Build/*
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/Neoky/[Aa]ssets/**/*.meta
+Neoky/[Aa]ssets/Build/*.meta
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /Neoky/[Aa]ssets/AssetStoreTools*

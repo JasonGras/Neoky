@@ -32,10 +32,10 @@ namespace Assets.Scripts
             string _unloadScene = _packet.ReadString();
             float _golds = _packet.ReadFloat();
             int _dicoCount = _packet.ReadInt();
-            Dictionary<string,int> _box = _packet.ReadDicoStringInt(_dicoCount);
+            Dictionary<string,int> _coin = _packet.ReadDicoStringInt(_dicoCount);
             float _diams = _packet.ReadFloat();
 
-            GameManager.instance.SpawnPlayer(_id, _username, _level, _levelxp, _requiredLvlUpXp,_startScene, _unloadScene, _golds, _box, _diams);
+            GameManager.instance.SpawnPlayer(_id, _username, _level, _levelxp, _requiredLvlUpXp,_startScene, _unloadScene, _golds, _coin, _diams);
         }       
 
         public static void SpawnTheEnemyAllCrewMember(Packet _packet)

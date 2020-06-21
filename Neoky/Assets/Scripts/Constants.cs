@@ -19,6 +19,7 @@ namespace Assets.Scripts
         public const string SCENE_REDEFINEPASSWORD = "ChangePassword"; 
         public const string SCENE_FORGOT_PASSWORD = "ForgotPassword"; 
         public const string SCENE_FORGOT_PASSWORD_REQUEST = "ForgotPasswordREquest"; 
+        public const string SCENE_LOOTS = "SceneLoots"; 
 
         /*Error Label_id*/
 

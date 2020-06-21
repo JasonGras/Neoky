@@ -19,6 +19,7 @@ namespace Assets.Scripts
         public Image _levelProgressBar;
         public TMP_Text text_golds_lbl;
         public TMP_Text text_diams_lbl;
+        public TMP_Text text_coin_lbl;
 
         private void Start()
         {
@@ -33,9 +34,23 @@ namespace Assets.Scripts
         {
             ClientSend.SwitchScene(Constants.SCENE_HOMEPAGE);
         }
+
+        public void ShowLootPage()
+        {
+            ClientSend.SwitchScene(Constants.SCENE_LOOTS);
+        }
+
         public void EnterDungeon()
         {
             ClientSend.EnterDungeon("instance_01_name");
+        }
+
+        public void OpenCoin()
+        {
+            ClientSend.OpenCoin(CoinLoots.Coin.Viking,CoinLoots.CoinAverageQuality.Green);
+            ClientSend.OpenCoin(CoinLoots.Coin.Viking,CoinLoots.CoinAverageQuality.Blue);
+            ClientSend.OpenCoin(CoinLoots.Coin.Viking,CoinLoots.CoinAverageQuality.Purple);
+            ClientSend.OpenCoin(CoinLoots.Coin.Viking,CoinLoots.CoinAverageQuality.Gold);
         }
 
         public void SetProgressLevel()
@@ -46,6 +61,14 @@ namespace Assets.Scripts
         {
             username_lbl.text = GameManager.players[Client.instance.myId].username;
             level_lbl.text = GameManager.players[Client.instance.myId].level.ToString();
+
+            int NbCoins = 0;
+            foreach (var CoinType in GameManager.players[Client.instance.myId].coin)
+            {
+                NbCoins += CoinType.Value;
+            }
+
+            text_coin_lbl.text = NbCoins.ToString();
             text_golds_lbl.text = GameManager.players[Client.instance.myId].golds.ToString();
             text_diams_lbl.text = GameManager.players[Client.instance.myId].diams.ToString();
             text_level_lbl.text = LocalizationSystem.GetLocalizedValue(Constants.text_level_lbl);

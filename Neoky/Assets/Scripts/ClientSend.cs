@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.CoinLoots;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -121,6 +122,21 @@ namespace Assets.Scripts
                 _packet.Write(_DungeonName);//Desired Scene Name
 
                 Debug.Log($"Desired enter Dungeon: {_DungeonName}");
+                SendTCPData(_packet);
+            }
+        }
+
+        public static void OpenCoin(Coin _coin, CoinAverageQuality _coinQuality)//string _CoinType, string _CoinColor
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.openCoin))
+            {
+                _packet.Write(Client.instance.myId);                
+                _packet.Write(Client.instance.myCurrentSession);
+                _packet.Write(Convert.ToInt32(_coin));//Desired Scene Name
+                _packet.Write(Convert.ToInt32(_coinQuality));//Desired Scene Name
+
+
+                //Debug.Log("Convert.ToInt32(_coin) : "+Convert.ToInt32(_coin) + " | Convert.ToInt32(_coinQuality) : " + Convert.ToInt32(_coinQuality));
                 SendTCPData(_packet);
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.CoinLoots;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -38,8 +39,9 @@ namespace Assets.Scripts
         enterDungeon,
         FightPacket,
         updateCollection,
-        unitAttack,
-        attackPacket
+        unitAttack,        
+        attackPacket,
+        openCoin
         //playerMovement,
     }
 
@@ -153,6 +155,18 @@ namespace Assets.Scripts
         {
             buffer.AddRange(BitConverter.GetBytes(_value));
         }
+        /*/// <summary>Adds an int to the packet.</summary>
+        /// <param name="_value">The int to add.</param>
+        public void Write(Coin _value)
+        {
+            buffer.AddRange(BitConverter.GetBytes((int) _value));
+        }
+        /// <summary>Adds an int to the packet.</summary>
+        /// <param name="_value">The int to add.</param>
+        public void Write(CoinAverageQuality _value)
+        {
+            buffer.AddRange(BitConverter.GetBytes((int)_value));
+        }*/
         /// <summary>Adds an int to the packet.</summary>
         /// <param name="_value">The int to add.</param>
         public void Write(int _value)

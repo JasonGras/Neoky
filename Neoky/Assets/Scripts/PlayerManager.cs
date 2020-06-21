@@ -12,7 +12,8 @@ namespace Assets.Scripts
         public float levelXp;
         public float requiredLvlUpXp;
         public float golds;
-        public Dictionary<string,int> box;
+        [SerializeField]
+        public Dictionary<string,int> coin;
         public float diams;
 
         
@@ -24,7 +25,7 @@ namespace Assets.Scripts
 
         public string currentScene;
 
-        public void Initialize(int _id, string _username, float _level, float _levelxp, float _requiredLvlUpXp, string _startScene, float _golds, Dictionary<string, int> _box, float _diams)
+        public void Initialize(int _id, string _username, float _level, float _levelxp, float _requiredLvlUpXp, string _startScene, float _golds, Dictionary<string, int> _coin, float _diams)
         {
             id = _id;
             username = _username;
@@ -33,7 +34,7 @@ namespace Assets.Scripts
             requiredLvlUpXp = _requiredLvlUpXp;
             currentScene = _startScene;
             golds = _golds;
-            box = _box;
+            coin = _coin;
             diams = _diams;
         }
 
