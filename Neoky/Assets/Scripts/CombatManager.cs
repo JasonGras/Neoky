@@ -96,9 +96,9 @@ namespace Assets.Scripts
         /// <summary>Spawns All player Crew</summary>
         /// <param name="_id">The player's ID.</param>
         /// <param name="_name">The member crew ID.</param>
-        public void AttackPlayerMemberCrew(NeokyCollection _playerUnit,NeokyCollection _enemyUnit)
+        public void AttackPlayerMemberCrew(Unit _playerUnit, Unit _enemyUnit)
         {
-            Transform PlayerUnitTransform = GameObject.Find(_playerUnit.collection_prefab).transform;
+            Transform PlayerUnitTransform = GameObject.Find(_playerUnit.UnitPrefab).transform;
         }
     }
 }

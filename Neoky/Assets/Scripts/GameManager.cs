@@ -17,7 +17,7 @@ namespace Assets.Scripts
         //
         public static Dictionary<int, GameObject> PlayerCrew = new Dictionary<int, GameObject>();
         public static Dictionary<int, GameObject> EnemyCrew = new Dictionary<int, GameObject>();
-        public static Dictionary<NeokyCollection, Dictionary<string,int>> AllPlayerUnits = new Dictionary<NeokyCollection, Dictionary<string, int>>();
+        public static Dictionary<Unit, Dictionary<string,int>> AllPlayerUnits = new Dictionary<Unit, Dictionary<string, int>>();
         //public static List<NeokyCollection> AllGameUnits = new List<NeokyCollection>();
 
         public GameObject netPlayerPrefab;
@@ -70,7 +70,7 @@ namespace Assets.Scripts
         /// <summary>Spawns All player Crew</summary>
         /// <param name="_id">The player's ID.</param>
         /// <param name="_name">The member crew ID.</param>
-        public void SpawnAllPlayerMemberCrew(Dictionary<int, NeokyCollection> _playerAllCrew)
+        public void SpawnAllPlayerMemberCrew(Dictionary<int, Unit> _playerAllCrew)
         {
             isSpawned_playerCrew = false;
             foreach (var _crewUnit in _playerAllCrew)
@@ -89,7 +89,7 @@ namespace Assets.Scripts
                     CrewMember.transform.parent = Spawn; // Set the Member Spawn on the Spawn_X position
                                                          //CrewMember.transform.localPosition = new Vector3(0, 0, 0);
                                                          // Initialize Player
-                    CrewMember.GetComponent<CrewMembers>().Initialize(_crewUnit.Key, _crewUnit.Value.collection_name, _crewUnit.Value.lifePoints);
+                    CrewMember.GetComponent<CrewMembers>().Initialize(_crewUnit.Key, _crewUnit.Value.UnitName, _crewUnit.Value.UnitHP);
 
                     // Add player to a List of Players
                     Debug.Log("CrewMember added to PlayerCrew");
@@ -116,7 +116,9 @@ namespace Assets.Scripts
                 Image CrewUnitImageBtn =  CrewMemberImgBtn.GetComponent<Image>();
                 CrewUnitImageBtn.sprite = _crewUnit.Value.local_Collection_image;
 
-                CrewMemberImgBtn.GetComponentInChildren<Button>().onClick.AddListener(() => OnUseUnitBtn(_crewUnit.Key));
+                //CrewMemberImgBtn.GetComponentInChildren<Button>().onClick.AddListener(() => OnUseUnitBtn(_crewUnit.Key));
+                CrewMemberImgBtn.GetComponent<Button>().onClick.AddListener(() => OnUseUnitBtn(_crewUnit.Key));
+                //Debug.Log("CrewMemberImgBtn set Up " + _crewUnit.Key);
 
             }
             isSpawned_playerCrew = true;
@@ -127,7 +129,8 @@ namespace Assets.Scripts
         }
 
         void OnUseUnitBtn(int _position)
-        {        
+        {
+            //Debug.Log("Listener Clicked " + _position);
             ClientSend.AttackPackets(_position,1);              
             
         }
@@ -135,7 +138,7 @@ namespace Assets.Scripts
         /// <summary>Spawns All player Crew</summary>
         /// <param name="_id">The player's ID.</param>
         /// <param name="_name">The member crew ID.</param>
-        public void SpawnAllEnemyMemberCrew(Dictionary<int, NeokyCollection> _enemyAllCrew)
+        public void SpawnAllEnemyMemberCrew(Dictionary<int, Unit> _enemyAllCrew)
         {
             isSpawned_EnemyCrew = false;
             foreach (var _crewUnit in _enemyAllCrew)
@@ -153,7 +156,7 @@ namespace Assets.Scripts
                     CrewMember.transform.parent = Spawn; // Set the Member Spawn on the Spawn_X position
                                                          //CrewMember.transform.localPosition = new Vector3(0, 0, 0);
                                                          // Initialize Player
-                    CrewMember.GetComponent<CrewMembers>().Initialize(_crewUnit.Key, _crewUnit.Value.collection_name, _crewUnit.Value.lifePoints);
+                    CrewMember.GetComponent<CrewMembers>().Initialize(_crewUnit.Key, _crewUnit.Value.UnitName, _crewUnit.Value.UnitHP);
 
                     // Add player to a List of Players
                     Debug.Log("CrewMember added to EnemyCrew");
@@ -175,7 +178,7 @@ namespace Assets.Scripts
         /// <summary>Spawns All player Crew</summary>
         /// <param name="_id">The player's ID.</param>
         /// <param name="_name">The member crew ID.</param>
-        public void UpdateAllPlayerUnits(Dictionary<NeokyCollection, Dictionary<string, int>> _allPlayerUnits)
+        public void UpdateAllPlayerUnits(Dictionary<Unit, Dictionary<string, int>> _allPlayerUnits)
         {
             AllPlayerUnits = _allPlayerUnits;
             ClientSend.SwitchScene(Constants.SCENE_COLLECTION);

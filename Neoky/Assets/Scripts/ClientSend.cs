@@ -135,8 +135,6 @@ namespace Assets.Scripts
                 _packet.Write(Convert.ToInt32(_coin));//Desired Scene Name
                 _packet.Write(Convert.ToInt32(_coinQuality));//Desired Scene Name
 
-
-                //Debug.Log("Convert.ToInt32(_coin) : "+Convert.ToInt32(_coin) + " | Convert.ToInt32(_coinQuality) : " + Convert.ToInt32(_coinQuality));
                 SendTCPData(_packet);
             }
         }

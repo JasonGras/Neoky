@@ -40,7 +40,7 @@ namespace Assets.Scripts
 
         public static void SpawnTheEnemyAllCrewMember(Packet _packet)
         {
-            Dictionary<int, NeokyCollection> _AllCrewPosition = new Dictionary<int, NeokyCollection>();
+            Dictionary<int, Unit> _AllCrewPosition = new Dictionary<int, Unit>();
 
             int _id = _packet.ReadInt();
             int _enemyCount = _packet.ReadInt();
@@ -70,7 +70,7 @@ namespace Assets.Scripts
 
         public static void GetAllPlayerCollection(Packet _packet)
         {
-            Dictionary<NeokyCollection, Dictionary<string, int>> _AllPlayerUnits = new Dictionary<NeokyCollection, Dictionary<string, int>>();
+            Dictionary<Unit, Dictionary<string, int>> _AllPlayerUnits = new Dictionary<Unit, Dictionary<string, int>>();
 
             int _id = _packet.ReadInt();
             int _unitsCount = _packet.ReadInt();
@@ -85,7 +85,7 @@ namespace Assets.Scripts
 
         public static void SpawnThePlayerAllCrewMember(Packet _packet)
         {
-            Dictionary<int, NeokyCollection> _AllCrewPosition = new Dictionary<int, NeokyCollection>();
+            Dictionary<int, Unit> _AllCrewPosition = new Dictionary<int, Unit>();
 
             int _id = _packet.ReadInt();
             int _crewCount = _packet.ReadInt();

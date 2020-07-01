@@ -411,14 +411,14 @@ namespace Assets.Scripts
         
         /// <summary>Reads a UserSession from the packet.</summary>
         /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
-        public Dictionary<int, NeokyCollection> ReadEnemyCrew(int _enemyCount, bool _moveReadPos = true)
+        public Dictionary<int, Unit> ReadEnemyCrew(int _enemyCount, bool _moveReadPos = true)
         {           
-            Dictionary<int, NeokyCollection> _DicoEnemyCrew = new Dictionary<int, NeokyCollection>();
+            Dictionary<int, Unit> _DicoEnemyCrew = new Dictionary<int, Unit>();
             try
             {
                 for (int i = 0; i < _enemyCount; i++)
                 {
-                    _DicoEnemyCrew.Add(ReadInt(_moveReadPos), ReadNeokyCollection(_moveReadPos));
+                    _DicoEnemyCrew.Add(ReadInt(_moveReadPos), ReadUnit(_moveReadPos));
                 }
             }
             catch(Exception e)
@@ -430,14 +430,14 @@ namespace Assets.Scripts
 
         /// <summary>Reads a UserSession from the packet.</summary>
         /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
-        public Dictionary<int, NeokyCollection> ReadPlayerUnits(int _unitsCount, bool _moveReadPos = true)
+        public Dictionary<int, Unit> ReadPlayerUnits(int _unitsCount, bool _moveReadPos = true)
         {
-            Dictionary<int, NeokyCollection> _DicoPlayerUnits = new Dictionary<int, NeokyCollection>();
+            Dictionary<int, Unit> _DicoPlayerUnits = new Dictionary<int, Unit>();
             try
             {
                 for (int i = 0; i < _unitsCount; i++)
                 {
-                    _DicoPlayerUnits.Add(ReadInt(_moveReadPos), ReadNeokyCollection(_moveReadPos));
+                    _DicoPlayerUnits.Add(ReadInt(_moveReadPos), ReadUnit(_moveReadPos));
                 }
             }
             catch (Exception e)
@@ -449,14 +449,14 @@ namespace Assets.Scripts
 
         /// <summary>Reads a UserSession from the packet.</summary>
         /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
-        public Dictionary<NeokyCollection, Dictionary<string, int>> ReadAllPlayerUnits(int _unitsCount, int _unitsStatsCount, bool _moveReadPos = true)
+        public Dictionary<Unit, Dictionary<string, int>> ReadAllPlayerUnits(int _unitsCount, int _unitsStatsCount, bool _moveReadPos = true)
         {
-            Dictionary<NeokyCollection, Dictionary<string, int>> _DicoPlayerUnits = new Dictionary<NeokyCollection, Dictionary<string, int>>();
+            Dictionary<Unit, Dictionary<string, int>> _DicoPlayerUnits = new Dictionary<Unit, Dictionary<string, int>>();
             try
             {
                 for (int i = 0; i < _unitsCount; i++)
                 {
-                    _DicoPlayerUnits.Add(ReadNeokyCollection(_moveReadPos), ReadPlayerUnitsDetail(_unitsStatsCount, _moveReadPos));
+                    _DicoPlayerUnits.Add(ReadUnit(_moveReadPos), ReadPlayerUnitsDetail(_unitsStatsCount, _moveReadPos));
                 }
             }
             catch (Exception e)
@@ -468,9 +468,18 @@ namespace Assets.Scripts
 
         /// <summary>Reads a UserSession from the packet.</summary>
         /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
-        public NeokyCollection ReadNeokyCollection(bool _moveReadPos = true)
+        public Unit ReadUnit(bool _moveReadPos = true)
         {
-            return new NeokyCollection(ReadString(_moveReadPos), ReadString(_moveReadPos), ReadString(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
+            return new Unit(ReadString(_moveReadPos), 
+                ReadFloat(_moveReadPos), 
+                ReadString(_moveReadPos), 
+                ReadString(_moveReadPos), 
+                ReadFloat(_moveReadPos), 
+                ReadFloat(_moveReadPos), 
+                ReadFloat(_moveReadPos), 
+                ReadFloat(_moveReadPos), 
+                ReadInt(_moveReadPos), 
+                ReadString(_moveReadPos));             
         }
 
         /// <summary>Reads a UserSession from the packet.</summary>
