@@ -28,6 +28,8 @@ namespace Assets.Scripts
 
         public GameObject netPlayerPrefab;
 
+        private Transform THorizontalBtnLayer;
+
         //[SerializeField]
         //public List<GameObject> PlayerCollectionList;
 
@@ -201,7 +203,7 @@ namespace Assets.Scripts
             Unit _NewtUnit;
 
             // Get the parent Location
-            Transform THorizontalBtnLayer = GameObject.Find("HorizontalBtnLayer").transform;
+            THorizontalBtnLayer = GameObject.Find("HorizontalBtnLayer").transform;
 
             foreach (Transform child in THorizontalBtnLayer)
             {
@@ -257,13 +259,9 @@ namespace Assets.Scripts
             Unit _EnemyUnitGameObject;
 
             PlayerUnitCrew.TryGetValue(_unitPosition, out _PlayerUnitGameObject);
-            //PlayerObjCrew.TryGetValue(_unitPosition, out _PlayerUnitGameObject);
-            //EnemyObjCrew.TryGetValue(_enemyPosition, out _EnemyUnitGameObject);
             IAUnitCrew.TryGetValue(_enemyPosition, out _EnemyUnitGameObject);
 
             UnitBattle _UnitBattle = _PlayerUnitGameObject.InstantiatedUnit.GetComponent<UnitBattle>();
-            //_UnitBattle.Attack(_enemyPosition, _unitPosition);
-
 
         }
 
@@ -275,17 +273,16 @@ namespace Assets.Scripts
             {
                 
                 case SpellTarget.IAUNIT:
-                    //PlayerUnitCrew.TryGetValue(_TargetAttackedUnit, out _UnitGameObject);
                     PlayerUnitCrew.TryGetValue(PlayerAttackingUnit, out _PlayerUnitGameObject);
                     UnitBattle _PlayerUnitBattle = _PlayerUnitGameObject.InstantiatedUnit.GetComponent<UnitBattle>();
                     _PlayerUnitBattle.PlayerSpellAttack(SpellID,_TargetAttackedUnit, PlayerAttackingUnit);
                     break;
                 case SpellTarget.ALLY:
                 case SpellTarget.SELF:
-                default:                
-                    /*EnemyUnitCrew.TryGetValue(IAAttackingUnit, out _UnitGameObject);
-                    UnitBattle _IAUnitBattle = _UnitGameObject.InstantiatedUnit.GetComponent<UnitBattle>();
-                    _IAUnitBattle.IAAttack(_TargetAttackedUnit);*/
+                default:
+                    PlayerUnitCrew.TryGetValue(PlayerAttackingUnit, out _PlayerUnitGameObject);
+                    UnitBattle _PlayerUnitBattleBuff = _PlayerUnitGameObject.InstantiatedUnit.GetComponent<UnitBattle>();
+                    _PlayerUnitBattleBuff.PlayerSpellBuff(SpellID, _TargetAttackedUnit, PlayerAttackingUnit);
                     break;
             }           
         }
@@ -297,7 +294,6 @@ namespace Assets.Scripts
             {
                 
                 case SpellTarget.IAUNIT:
-                    //PlayerUnitCrew.TryGetValue(_TargetAttackedUnit, out _UnitGameObject);
                     IAUnitCrew.TryGetValue(IAAttackingUnit, out _IAUnitGameObject);
                     UnitBattle _IAUnitBattle = _IAUnitGameObject.InstantiatedUnit.GetComponent<UnitBattle>();
                     _IAUnitBattle.IASpellAttack(SpellID,_TargetAttackedUnit, IAAttackingUnit);
@@ -311,41 +307,6 @@ namespace Assets.Scripts
                     break;
             }           
         }
-
-
-        // Change Panel Image
-        // Change Panel Souls
-
-        // instantiate New Panel
-
-
-        // On PlayeCollectionUnit find the MemberCrewPrefab using _memberCrewPrefab Name
-        /*Debug.Log("Find Prefab in PlayerCollectionList");
-        GameObject unitCrewPrefab = PlayerCollectionList.Where<GameObject>(x => x.name == _crewUnit.Value.collection_prefab).SingleOrDefault();
-
-        if (unitCrewPrefab != null)
-        {
-            Transform Spawn = GameObject.Find("Spawn_Enemy_" + _crewUnit.Key.ToString()).transform;
-            // Create Player Prefab
-            Debug.Log("Instantiate Crew Prefab");
-            GameObject CrewMember = Instantiate(unitCrewPrefab, Spawn);
-            CrewMember.transform.parent = Spawn; // Set the Member Spawn on the Spawn_X position
-                                                 //CrewMember.transform.localPosition = new Vector3(0, 0, 0);
-                                                 // Initialize Player
-            CrewMember.GetComponent<CrewMembers>().Initialize(_crewUnit.Key, _crewUnit.Value.collection_name, _crewUnit.Value.lifePoints);
-
-            // Add player to a List of Players
-            Debug.Log("CrewMember added to EnemyCrew");
-            EnemyCrew.Add(_crewUnit.Key, CrewMember);
-        }
-        else
-        {
-            Debug.Log("You forgot to Add the Prefab of the Unit on the GameManager Size on the UnloadScene");
-        }*/
-
-
-
-
 
 
         #region SCENE_MANAGEMENT

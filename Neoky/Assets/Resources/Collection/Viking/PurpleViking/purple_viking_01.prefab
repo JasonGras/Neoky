@@ -258,7 +258,7 @@ GameObject:
   - component: {fileID: -9087366874613555057}
   - component: {fileID: -447324628073120722}
   m_Layer: 0
-  m_Name: arthur_01
+  m_Name: purple_viking_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -290,7 +290,7 @@ Animator:
   m_GameObject: {fileID: 1511821724274743344}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d6851830e209a2645bec7b89c4455f83, type: 2}
+  m_Controller: {fileID: 9100000, guid: a5b3ee3b7749c764f87c0e97b3455e65, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -326,6 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4385a4fbb660e14eb383848fa0b0829, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentUnitID: 0
 --- !u!1 &1511821724274743346
 GameObject:
   m_ObjectHideFlags: 0
