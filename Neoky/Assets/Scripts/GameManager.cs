@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assets.Scripts.Spells;
+using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +17,12 @@ namespace Assets.Scripts
         public static GameManager instance;
 
         //
-        public static Dictionary<int, GameObject> PlayerCrew = new Dictionary<int, GameObject>();
-        public static Dictionary<int, GameObject> EnemyCrew = new Dictionary<int, GameObject>();
+        //public static Dictionary<int, GameObject> PlayerObjCrew = new Dictionary<int, GameObject>();
+        //public static Dictionary<int, GameObject> EnemyObjCrew = new Dictionary<int, GameObject>();
+
+        public static Dictionary<int, Unit> PlayerUnitCrew ;
+        public static Dictionary<int, Unit> IAUnitCrew ;
+
         public static Dictionary<Unit, Dictionary<string,int>> AllPlayerUnits = new Dictionary<Unit, Dictionary<string, int>>();
         //public static List<NeokyCollection> AllGameUnits = new List<NeokyCollection>();
 
@@ -26,9 +32,14 @@ namespace Assets.Scripts
         //public List<GameObject> PlayerCollectionList;
 
         public bool isSpawned_playerCrew { get; set; } = false;
-        public bool isSpawned_EnemyCrew { get; set; } = false;
+        public bool isSpawned_IACrew { get; set; } = false;
 
-
+        public enum SpellTarget
+        {
+            ALLY,
+            IAUNIT,
+            SELF,
+        }
 
         //public Dictionary<string, GameObject> PlayerColle*ctionList = new Dictionary<string, GameObject>();
 
@@ -72,6 +83,9 @@ namespace Assets.Scripts
         /// <param name="_name">The member crew ID.</param>
         public void SpawnAllPlayerMemberCrew(Dictionary<int, Unit> _playerAllCrew)
         {
+            PlayerUnitCrew = new Dictionary<int, Unit>();
+            PlayerUnitCrew = _playerAllCrew;
+
             isSpawned_playerCrew = false;
             foreach (var _crewUnit in _playerAllCrew)
             {
@@ -93,7 +107,8 @@ namespace Assets.Scripts
 
                     // Add player to a List of Players
                     Debug.Log("CrewMember added to PlayerCrew");
-                    PlayerCrew.Add(_crewUnit.Key, CrewMember);
+                    _crewUnit.Value.InstantiatedUnit = CrewMember;
+                    //PlayerObjCrew.Add(_crewUnit.Key, CrewMember);
                 }
                 else
                 {
@@ -101,28 +116,11 @@ namespace Assets.Scripts
                 }
 
 
-                //Add Unit Image Btn
-
-                // Get the parent Location
-                Transform THorizontalBtnLayer = GameObject.Find("HorizontalBtnLayer").transform;
-                //GameObject UnitImageBtn = GameObject.Find("UnitImageBtn");
                 
-                // Instantiate the Btn Image
-                GameObject CrewMemberImgBtn = Instantiate(_crewUnit.Value.local_Collection_IMGBtn_prefab, THorizontalBtnLayer);
-                // Set The parent
-                //CrewMemberImgBtn.transform.parent = THorizontalBtnLayer;
-
-                // Set the Image of the Button
-                Image CrewUnitImageBtn =  CrewMemberImgBtn.GetComponent<Image>();
-                CrewUnitImageBtn.sprite = _crewUnit.Value.local_Collection_image;
-
-                //CrewMemberImgBtn.GetComponentInChildren<Button>().onClick.AddListener(() => OnUseUnitBtn(_crewUnit.Key));
-                CrewMemberImgBtn.GetComponent<Button>().onClick.AddListener(() => OnUseUnitBtn(_crewUnit.Key));
-                //Debug.Log("CrewMemberImgBtn set Up " + _crewUnit.Key);
 
             }
             isSpawned_playerCrew = true;
-            if (isSpawned_EnemyCrew)
+            if (isSpawned_IACrew)
             {
                 ClientSend.SendFightReady();
             }                
@@ -135,12 +133,25 @@ namespace Assets.Scripts
             
         }
 
+        void OnUseSpell(Spell _Spell, int _PlayerUnitID)
+        {
+            //Debug.Log("Listener Clicked " + _position);
+            //ClientSend.AttackPackets(_position, 1);
+            int Target = 1;
+            ClientSend.AttackSpell(_Spell.SpellID, Target, _PlayerUnitID);
+
+        }
+        
+
         /// <summary>Spawns All player Crew</summary>
         /// <param name="_id">The player's ID.</param>
         /// <param name="_name">The member crew ID.</param>
         public void SpawnAllEnemyMemberCrew(Dictionary<int, Unit> _enemyAllCrew)
         {
-            isSpawned_EnemyCrew = false;
+            IAUnitCrew = new Dictionary<int, Unit>();
+            IAUnitCrew = _enemyAllCrew;
+
+            isSpawned_IACrew = false;
             foreach (var _crewUnit in _enemyAllCrew)
             {
                 // On PlayeCollectionUnit find the MemberCrewPrefab using _memberCrewPrefab Name
@@ -160,14 +171,15 @@ namespace Assets.Scripts
 
                     // Add player to a List of Players
                     Debug.Log("CrewMember added to EnemyCrew");
-                    EnemyCrew.Add(_crewUnit.Key, CrewMember);
+                    _crewUnit.Value.InstantiatedUnit = CrewMember;
+                    //EnemyObjCrew.Add(_crewUnit.Key, CrewMember);
                 }
                 else
                 {
                     Debug.Log("You forgot to Add the Prefab of the Unit on the GameManager Size on the UnloadScene");
                 }
             }
-            isSpawned_EnemyCrew = true;
+            isSpawned_IACrew = true;
             if (isSpawned_playerCrew)
             {
                 ClientSend.SendFightReady();
@@ -182,6 +194,41 @@ namespace Assets.Scripts
         {
             AllPlayerUnits = _allPlayerUnits;
             ClientSend.SwitchScene(Constants.SCENE_COLLECTION);
+        }
+
+        public void SetNewPlayerUnitTurn(int _NewUnitIDTurn)
+        {
+            Unit _NewtUnit;
+
+            // Get the parent Location
+            Transform THorizontalBtnLayer = GameObject.Find("HorizontalBtnLayer").transform;
+
+            foreach (Transform child in THorizontalBtnLayer)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+
+            // Instantiate the Btn Image
+            PlayerUnitCrew.TryGetValue(_NewUnitIDTurn, out _NewtUnit);
+            //UnitBattle _PlayerUnitBattle = _NewtUnit.InstantiatedUnit.GetComponent<UnitBattle>();
+
+            // Foreach Spell
+            foreach (var Spell in _NewtUnit.UnitSpellList)
+            {     
+                    GameObject CrewMemberImgBtn = Instantiate(_NewtUnit.local_Collection_IMGBtn_prefab, THorizontalBtnLayer);
+                    // Set the Image of the Button
+                    Image CrewUnitImageBtn = CrewMemberImgBtn.GetComponent<Image>();
+
+                    CrewUnitImageBtn.sprite = Spell.Spell_image; // Put the Image of The Spell ? 
+
+                    CrewMemberImgBtn.GetComponent<Button>().onClick.AddListener(() => OnUseSpell(Spell, _NewUnitIDTurn));                
+            }
+            
+
+            
+
+            
+            //Debug.Log("CrewMemberImgBtn set Up " + _crewUnit.Key);
         }
 
         /// <summary>Spawns All player Crew</summary>
@@ -206,16 +253,63 @@ namespace Assets.Scripts
 
         public void CallbackPlayerAttack(int _unitPosition, int _enemyPosition) // Action onAttackComplete
         {
-            GameObject _PlayerUnitGameObject;
-            GameObject _EnemyUnitGameObject;
+            Unit _PlayerUnitGameObject;
+            Unit _EnemyUnitGameObject;
 
-            PlayerCrew.TryGetValue(_unitPosition, out _PlayerUnitGameObject);
-            EnemyCrew.TryGetValue(_enemyPosition, out _EnemyUnitGameObject);
+            PlayerUnitCrew.TryGetValue(_unitPosition, out _PlayerUnitGameObject);
+            //PlayerObjCrew.TryGetValue(_unitPosition, out _PlayerUnitGameObject);
+            //EnemyObjCrew.TryGetValue(_enemyPosition, out _EnemyUnitGameObject);
+            IAUnitCrew.TryGetValue(_enemyPosition, out _EnemyUnitGameObject);
 
-            UnitBattle _UnitBattle = _PlayerUnitGameObject.GetComponent<UnitBattle>();
-            _UnitBattle.Attack(_unitPosition, _enemyPosition);
+            UnitBattle _UnitBattle = _PlayerUnitGameObject.InstantiatedUnit.GetComponent<UnitBattle>();
+            //_UnitBattle.Attack(_enemyPosition, _unitPosition);
 
 
+        }
+
+        public void PlayerUnitAttack(int PlayerAttackingUnit, int _TargetAttackedUnit, SpellTarget TargetPlayerOrIA, string SpellID)
+        {
+            Unit _PlayerUnitGameObject;
+
+            switch (TargetPlayerOrIA)
+            {
+                
+                case SpellTarget.IAUNIT:
+                    //PlayerUnitCrew.TryGetValue(_TargetAttackedUnit, out _UnitGameObject);
+                    PlayerUnitCrew.TryGetValue(PlayerAttackingUnit, out _PlayerUnitGameObject);
+                    UnitBattle _PlayerUnitBattle = _PlayerUnitGameObject.InstantiatedUnit.GetComponent<UnitBattle>();
+                    _PlayerUnitBattle.PlayerSpellAttack(SpellID,_TargetAttackedUnit, PlayerAttackingUnit);
+                    break;
+                case SpellTarget.ALLY:
+                case SpellTarget.SELF:
+                default:                
+                    /*EnemyUnitCrew.TryGetValue(IAAttackingUnit, out _UnitGameObject);
+                    UnitBattle _IAUnitBattle = _UnitGameObject.InstantiatedUnit.GetComponent<UnitBattle>();
+                    _IAUnitBattle.IAAttack(_TargetAttackedUnit);*/
+                    break;
+            }           
+        }
+        public void IAUnitAttack(int IAAttackingUnit, int _TargetAttackedUnit, SpellTarget TargetPlayerOrIA, string SpellID)
+        {
+            Unit _IAUnitGameObject;
+
+            switch (TargetPlayerOrIA)
+            {
+                
+                case SpellTarget.IAUNIT:
+                    //PlayerUnitCrew.TryGetValue(_TargetAttackedUnit, out _UnitGameObject);
+                    IAUnitCrew.TryGetValue(IAAttackingUnit, out _IAUnitGameObject);
+                    UnitBattle _IAUnitBattle = _IAUnitGameObject.InstantiatedUnit.GetComponent<UnitBattle>();
+                    _IAUnitBattle.IASpellAttack(SpellID,_TargetAttackedUnit, IAAttackingUnit);
+                    break;
+                case SpellTarget.ALLY:
+                case SpellTarget.SELF:
+                default:                
+                    /*EnemyUnitCrew.TryGetValue(IAAttackingUnit, out _UnitGameObject);
+                    UnitBattle _IAUnitBattle = _UnitGameObject.InstantiatedUnit.GetComponent<UnitBattle>();
+                    _IAUnitBattle.IAAttack(_TargetAttackedUnit);*/
+                    break;
+            }           
         }
 
 

@@ -53,6 +53,21 @@ namespace Assets.Scripts
 
         }
 
+        public static void TurnOverPacket(int CurrentUnitID, string TurnOverSide)
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.TurnOverPacket))
+            {
+                _packet.Write(Client.instance.myId);
+                _packet.Write(Client.instance.myCurrentSession);
+                _packet.Write(TurnOverSide);//Desired Scene Name
+                _packet.Write(CurrentUnitID);//Desired Scene Name
+
+                Debug.Log($"Turn Over Packet sent for "+ TurnOverSide + " ID : "+ CurrentUnitID);
+                SendTCPData(_packet);
+            }
+
+        }
+
         /// <summary>Sends player input to the server.</summary>
         /// <param name="_inputs"></param>
         public static void UnitAttackRequest(Vector3 _TouchInputs)
@@ -159,6 +174,21 @@ namespace Assets.Scripts
                 _packet.Write(Client.instance.myCurrentSession);
                 _packet.Write(_myUnit);//Desired Scene Name
                 _packet.Write(_enemyUnit);//Desired Scene Name
+
+                //Debug.Log($"Fight Packets on my Scene: {_status}");
+                SendTCPData(_packet);
+            }
+        }
+        
+        public static void AttackSpell(string _UnitSpellID, int _IAUnit, int _PlayerUnit)
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.attackSpellPacket))
+            {
+                _packet.Write(Client.instance.myId);
+                _packet.Write(Client.instance.myCurrentSession);
+                _packet.Write(_UnitSpellID);//Desired Scene Name
+                _packet.Write(_IAUnit);//Desired Scene Name
+                _packet.Write(_PlayerUnit);//Desired Scene Name
 
                 //Debug.Log($"Fight Packets on my Scene: {_status}");
                 SendTCPData(_packet);

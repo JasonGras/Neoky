@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
+using static Assets.Scripts.GameManager;
 
 namespace Assets.Scripts
 {
@@ -49,7 +50,7 @@ namespace Assets.Scripts
             Debug.Log("New EnemyAllCrew recieved !");
             GameManager.instance.SpawnAllEnemyMemberCrew(_AllCrewPosition);
 
-            _AllCrewPosition.Clear();
+            //_AllCrewPosition.Clear();
         }
 
         public static void AttackCallback(Packet _packet)
@@ -67,6 +68,50 @@ namespace Assets.Scripts
             //_AllPlayerUnits.Clear();
         }
         
+        public static void PlayerAttackPacketRecieved(Packet _packet)
+        {
+            //Dictionary<NeokyCollection, Dictionary<string, int>> _AllPlayerUnits = new Dictionary<NeokyCollection, Dictionary<string, int>>();
+
+            int _id = _packet.ReadInt();
+            int _PlayerAttackingUnit = _packet.ReadInt();
+            int _TargetUnit = _packet.ReadInt();
+            int _SpellTarget = _packet.ReadInt();
+            string _SpellID = _packet.ReadString();
+
+            Debug.Log("Player N° " + _PlayerAttackingUnit + "TargetUnit "+ _TargetUnit + " & wich is a  "+ _SpellTarget + " With the Spell " + _SpellID);
+            //GameManager.PlayerCrew.TryGetValue(_unitPlayerPosition, out _PlayerUnitGameObject);
+            GameManager.instance.PlayerUnitAttack(_PlayerAttackingUnit, _TargetUnit, (SpellTarget) _SpellTarget, _SpellID);
+
+            //_AllPlayerUnits.Clear();
+        }
+        public static void IAUnitAttack(Packet _packet)
+        {
+            //Dictionary<NeokyCollection, Dictionary<string, int>> _AllPlayerUnits = new Dictionary<NeokyCollection, Dictionary<string, int>>();
+
+            int _id = _packet.ReadInt();
+            int _IAAttackingUnit = _packet.ReadInt();
+            int _IATargetUnit = _packet.ReadInt();
+            int _SpellTarget = _packet.ReadInt();
+            string _SpellID = _packet.ReadString();
+
+            Debug.Log("IAUnit N° " + _IAAttackingUnit + "TargetUnit "+ _IATargetUnit + " & wich is a  "+ _SpellTarget + " With the Spell " + _SpellID);
+            //GameManager.PlayerCrew.TryGetValue(_unitPlayerPosition, out _PlayerUnitGameObject);
+            GameManager.instance.IAUnitAttack(_IAAttackingUnit, _IATargetUnit, (SpellTarget) _SpellTarget, _SpellID);
+
+            //_AllPlayerUnits.Clear();
+        }
+
+
+        public static void NewPlayerUnitTurn(Packet _packet)
+        {
+            int _id = _packet.ReadInt();
+            int _NewUnitIDTurn = _packet.ReadInt();
+            Debug.Log("New Player Unit ID Turn ! ID : "+ _NewUnitIDTurn);
+       
+            GameManager.instance.SetNewPlayerUnitTurn(_NewUnitIDTurn);
+        }
+
+
 
         public static void GetAllPlayerCollection(Packet _packet)
         {
@@ -94,7 +139,7 @@ namespace Assets.Scripts
             Debug.Log("New PlayerAllCrew recieved !");
             GameManager.instance.SpawnAllPlayerMemberCrew(_AllCrewPosition);
 
-            _AllCrewPosition.Clear();
+            //_AllCrewPosition.Clear();
         }
 
         public static void SwitchToScene(Packet _packet)

@@ -321,6 +321,9 @@ namespace Assets.Scripts
             { (int)ServerPackets.spawnPlayerAllCrew, ClientHandle.SpawnThePlayerAllCrewMember },
             { (int)ServerPackets.getAllPlayerUnits, ClientHandle.GetAllPlayerCollection },
             { (int)ServerPackets.callbackAttackPacket, ClientHandle.AttackCallback },
+            { (int)ServerPackets.IAAttackPacket, ClientHandle.IAUnitAttack },
+            { (int)ServerPackets.newPlayerUnitTurn, ClientHandle.NewPlayerUnitTurn },
+            { (int)ServerPackets.PlayerAttackPacket, ClientHandle.PlayerAttackPacketRecieved },
         };
             Debug.Log("Initialized packets.");
         }

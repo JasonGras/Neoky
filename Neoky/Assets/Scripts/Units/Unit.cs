@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Spells;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,8 +37,12 @@ namespace Assets.Scripts
 
         public float UnitHP { get; set; }
 
+        public List<Spell> UnitSpellList { get; set; }
 
-        public Unit(string _UnitName,float _UnitLevel, string _UnitPrefab, string _UnitImage, float _UnitDamages, float _UnitVelocity, float _UnitHP, float _UnitTurnMeter, int _UnitQuality, string _UnitTribe)
+        public GameObject InstantiatedUnit { get; set; }
+
+
+        public Unit(string _UnitName,float _UnitLevel, string _UnitPrefab, string _UnitImage, float _UnitDamages, float _UnitVelocity, float _UnitHP, float _UnitTurnMeter, int _UnitQuality, List<Spell> _UnitSpellList, string _UnitTribe)
         {
             UnitName = _UnitName;
             UnitLevel = _UnitLevel;
@@ -49,12 +54,31 @@ namespace Assets.Scripts
             UnitTurnMeter = _UnitTurnMeter;
             UnitQuality = _UnitQuality;
             UnitTribe = _UnitTribe;
+            UnitSpellList = _UnitSpellList;
+
+            foreach (Spell Spell in _UnitSpellList)
+            {
+                Spell.Spell_image = Resources.Load<Sprite>("Collection/" + _UnitTribe + "/" + _UnitName + "/Spell/" + Spell.SpellIMG);
+            }
 
             local_Collection_prefab = Resources.Load<GameObject>("Collection/" + _UnitTribe + "/"+ _UnitName + "/"+ _UnitPrefab);
             local_Collection_image = Resources.Load<Sprite>("Collection/" + _UnitTribe + "/" + _UnitName + "/" + _UnitImage);
             local_Collection_IMGBtn_prefab = Resources.Load<GameObject>("Prefab/UnitImageBtn");
             //Debug.Log("prefab Found");
             //collection_prefab = _collectionPrefab;
+        }
+
+        private void ConvertToSpell(List<string> _UnitSpellList)
+        {
+           /* List<ISpell> _currentSpellList = new List<ISpell>();
+            
+            foreach (var StringLine in _UnitSpellList)
+            {
+                FindSpellFromID(StringLine)
+                ISpell currentSpell;
+                currentSpell.SpellID = StringLine;
+                _currentSpellList.Add();
+            }*/
         }
     }
 }

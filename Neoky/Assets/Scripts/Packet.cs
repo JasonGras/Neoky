@@ -1,9 +1,11 @@
 ﻿using Assets.Scripts.CoinLoots;
+using Assets.Scripts.Spells;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using static Assets.Scripts.GameManager;
 
 namespace Assets.Scripts
 {
@@ -22,6 +24,9 @@ namespace Assets.Scripts
         spawnPlayerAllCrew,
         getAllPlayerUnits,
         callbackAttackPacket,
+        IAAttackPacket,
+        newPlayerUnitTurn,
+        PlayerAttackPacket,
         playerDisconnected
     }
 
@@ -41,6 +46,8 @@ namespace Assets.Scripts
         updateCollection,
         unitAttack,        
         attackPacket,
+        attackSpellPacket,
+        TurnOverPacket,
         openCoin
         //playerMovement,
     }
@@ -408,7 +415,37 @@ namespace Assets.Scripts
         {
             return new UserSession(ReadString(_moveReadPos), ReadString(_moveReadPos), ReadString(_moveReadPos));
         }
-        
+
+        /// <summary>Reads a UserSession from the packet.</summary>
+        /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
+        public List<Spell> ReadSpellList(int _SpellCount, bool _moveReadPos = true)
+        {
+            //return new List<ISpell> { ReadISpell(_moveReadPos), ReadString(_moveReadPos), ReadString(_moveReadPos) };
+
+            List<Spell> _SpellList = new List<Spell>();
+            try
+            {
+                for (int i = 0; i < _SpellCount; i++)
+                {
+                    _SpellList.Add(ReadSpell(_moveReadPos));
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Could not read value of type 'List<Spell>'!");
+            }
+            return _SpellList;
+        }
+
+        /// <summary>Reads a UserSession from the packet.</summary>
+        /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
+        public Spell ReadSpell(bool _moveReadPos = true)
+        {
+            return new Spell(ReadString(_moveReadPos), ReadString(_moveReadPos), ReadString(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadInt(_moveReadPos), ReadInt(_moveReadPos), ReadInt(_moveReadPos), ReadInt(_moveReadPos));
+        }
+
+        //ReadString(_moveReadPos), ReadString(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadInt(_moveReadPos), ReadInt(_moveReadPos), ReadInt(_moveReadPos), ReadInt(_moveReadPos)
+
         /// <summary>Reads a UserSession from the packet.</summary>
         /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
         public Dictionary<int, Unit> ReadEnemyCrew(int _enemyCount, bool _moveReadPos = true)
@@ -478,7 +515,8 @@ namespace Assets.Scripts
                 ReadFloat(_moveReadPos), 
                 ReadFloat(_moveReadPos), 
                 ReadFloat(_moveReadPos), 
-                ReadInt(_moveReadPos), 
+                ReadInt(_moveReadPos),
+                ReadSpellList(ReadInt(_moveReadPos)),        
                 ReadString(_moveReadPos));             
         }
 

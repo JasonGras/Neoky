@@ -10,13 +10,15 @@ namespace Assets.Scripts
     public class UnitBattle : MonoBehaviour
     {
 
-        GameObject _PlayerUnitGameObject;
-        GameObject _EnemyUnitGameObject;
+        Unit _PlayerUnitGameObject;
+        Unit _IAUnitGameObject;
 
         private State state;
         private Vector3 slideTargetPosition;
         private Action onSlideComplete;
         private Action onAttackComplete;
+
+        public int CurrentUnitID;
 
         private enum State
         {
@@ -53,33 +55,64 @@ namespace Assets.Scripts
                     {
                         // Arrived at Slide Target Position
                         //transform.position = slideTargetPosition;
-                        Debug.Log("OnSlideComplete !");
+                        //Debug.Log("OnSlideComplete !");
                         onSlideComplete();
                     }
                     break;
             }
         }
 
-        public void Attack(int _unitPosition, int _enemyPosition) // Action onAttackComplete
+        public void IASpellAttack(string SpellID, int _TargetPosition, int IAAttackingUnitID) // Action onAttackComplete
         {
-            GameManager.PlayerCrew.TryGetValue(_unitPosition, out _PlayerUnitGameObject);
-            GameManager.EnemyCrew.TryGetValue(_enemyPosition, out _EnemyUnitGameObject);
-
-            Vector3 slideTargetPosition = _EnemyUnitGameObject.transform.position + (transform.position - _EnemyUnitGameObject.transform.position).normalized * 1f; // Offset
-            Vector3 startingPosition = transform.position;
+            CurrentUnitID = IAAttackingUnitID;
+            GameManager.PlayerUnitCrew.TryGetValue(_TargetPosition, out _PlayerUnitGameObject);
+            //GameManager.EnemyObjCrew.TryGetValue(_enemyPosition, out _EnemyUnitGameObject);
+            
+            Vector3 slideTargetPosition = _PlayerUnitGameObject.InstantiatedUnit.transform.position + (transform.parent.position - _PlayerUnitGameObject.InstantiatedUnit.transform.position).normalized * 1f; // Offset
+            Vector3 startingPosition = transform.parent.position;
 
             // Slide to Target
             SlideToPosition(slideTargetPosition, () =>
             {
                 // Arrived at Target, attack him
                 state = State.Busy;
-                Vector3 attackDir = (_EnemyUnitGameObject.transform.position - transform.position).normalized;
+                Vector3 attackDir = (_PlayerUnitGameObject.InstantiatedUnit.transform.position - transform.parent.position).normalized;
                 PlayAnimAttack(attackDir,() => { 
                     SlideToPosition(startingPosition, () => {
                     // Slide back completed, back to idle
                     state = State.Idle;
                     anim.SetBool("isUnitAttackTurn", false);
                     anim.SetBool("isUnitRunningAttack", false);
+                    Debug.Log("Send IA TurnOverPacket");
+                    ClientSend.TurnOverPacket(CurrentUnitID, "IA_TURN_OVER");
+                    });
+                });
+            });
+        }
+        
+        public void PlayerSpellAttack(string SpellID, int _TargetPosition, int UnitAttackingID) // Action onAttackComplete
+        {
+            CurrentUnitID = UnitAttackingID;
+            //GameManager.PlayerCrew.TryGetValue(_unitPosition, out _PlayerUnitGameObject);
+            GameManager.IAUnitCrew.TryGetValue(_TargetPosition, out _IAUnitGameObject);
+
+            Vector3 slideTargetPosition = _IAUnitGameObject.InstantiatedUnit.transform.position + (transform.parent.position - _IAUnitGameObject.InstantiatedUnit.transform.position).normalized * 1f; // Offset
+            Vector3 startingPosition = transform.parent.position;
+
+            // Slide to Target
+            SlideToPosition(slideTargetPosition, () =>
+            {
+                // Arrived at Target, attack him
+                state = State.Busy;
+                Vector3 attackDir = (_IAUnitGameObject.InstantiatedUnit.transform.position - transform.parent.position).normalized;
+                PlayAnimAttack(attackDir,() => { 
+                    SlideToPosition(startingPosition, () => {
+                    // Slide back completed, back to idle
+                    state = State.Idle;
+                    anim.SetBool("isUnitAttackTurn", false);
+                    anim.SetBool("isUnitRunningAttack", false);
+                    Debug.Log("Send Player TurnOverPacket");
+                    ClientSend.TurnOverPacket(CurrentUnitID, "PLAYER_TURN_OVER");
                     });
                 });
             });
@@ -110,7 +143,7 @@ namespace Assets.Scripts
 
         public void AttackEnded()
         {
-            onAttackComplete();
+            onAttackComplete();            
         }
     }
 }
